@@ -14,6 +14,24 @@
         android:theme="@style/Theme.AudioPhile"
         tools:targetApi="31">
         <activity
+            android:name=".PassUpdatedActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OTPActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NewCredActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SelectResetPassActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AccEmailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ForgotPassActivity"
+            android:exported="false" />
+        <activity
             android:name=".RegisterActivity"
             android:exported="false" />
         <activity
