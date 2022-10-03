@@ -16,7 +16,6 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="goToHomeFromOTP"
             android:padding="5dp"
             android:src="@drawable/general_close_icon"
             app:tint="@color/black"
@@ -82,11 +81,11 @@
 
 
         <Button
+            android:id="@+id/verifyOtp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:backgroundTint="@color/colorAccent"
-            android:onClick="callNextScreenFromOTP"
             android:text="@string/verify_code"
             android:textColor="@color/white"
             android:transitionName="transition_OTP_screen" />

@@ -18,7 +18,7 @@
             android:id="@+id/forget_password_back_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="callBackScreenFromForgetPassword"
+
             android:padding="5dp"
             android:src="@drawable/general_back_icon" />
 
@@ -105,7 +105,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:backgroundTint="@color/colorAccent"
-                android:onClick="verifyPhoneNumber"
+
                 android:text="@string/next_btn"
                 android:textColor="@color/white" />
 

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "238578672640",
+    "project_id": "audiophile-c2051",
+    "storage_bucket": "audiophile-c2051.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:238578672640:android:5526417dd929cc1d57a4e5",
+        "android_client_info": {
+          "package_name": "app.android.audiophile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "238578672640-csbcbg0k1cscorg84efs3h3ogkkt9s26.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZbWXDAq7fI-miLZmrXv4vQwZkHUSnDhc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "238578672640-csbcbg0k1cscorg84efs3h3ogkkt9s26.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
