@@ -56,9 +56,10 @@
             app:hintTextColor="@color/white">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/regFullName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"/>
+                android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -78,9 +79,10 @@
             app:hintTextColor="@color/white">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/regUserName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"/>
+                android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -98,9 +100,10 @@
             app:hintTextColor="@color/white">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/regEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"/>
+                android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -119,9 +122,10 @@
             app:hintTextColor="@color/white">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/regPhoneNumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"/>
+                android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -140,10 +144,11 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/regPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
-                android:textColorHint="#212121"/>
+                android:textColorHint="#212121" />
         </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>

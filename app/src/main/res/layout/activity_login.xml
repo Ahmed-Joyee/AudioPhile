@@ -119,6 +119,7 @@
                 android:background="#00000000"
                 android:elevation="0dp"
                 android:letterSpacing="0"
+
                 android:text="@string/don_t_have_an_account_sign_up"
                 android:textAllCaps="false"
                 android:textColor="@color/white"

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -31,46 +32,41 @@ public class LoginActivity extends AppCompatActivity {
         // hide action bar
         getSupportActionBar().hide();
 
+
+
+        goForgotActivity();
+        loginUser();
+        goRegisterActivity();
+    }
+
+    private void loginUser() {
+        btnLogin = findViewById(R.id.login);
         etUsername = findViewById(R.id.login_username);
         etPassword = findViewById(R.id.login_password);
-        btnLogin = findViewById(R.id.login);
-        btnRegister = findViewById(R.id.login_register_instead);
-        btnForgot = findViewById(R.id.forgot_pass);
-
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String username = etUsername.getEditText().getText().toString();
                 String password = etPassword.getEditText().getText().toString();
-
-                loginUser(username, password);
-            }
-        });
-
-        btnRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goRegisterActivity();
-            }
-        });
-
-        btnForgot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goForgotActivity();
+                if(check(username,password)==true){
+                    Intent intent = new Intent(LoginActivity.this,AccEmailActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+                else{
+                    Toast.makeText(LoginActivity.this,"username or password incorrect.",Toast.LENGTH_SHORT).show();
+                    SimpleDialog simpleDialog = new SimpleDialog("Login Error",
+                            "Invalid username or password. Please try again.");
+                    simpleDialog.show(getSupportFragmentManager(), "login error dialog");
+                    return;
+                }
             }
         });
     }
 
-    private void loginUser(String username, String password) {
-
-    }
-
-    private void wrongPasswordNotification() {
-        SimpleDialog simpleDialog = new SimpleDialog("Login Error",
-                "Invalid username or password. Please try again.");
-        simpleDialog.show(getSupportFragmentManager(), "login error dialog");
-    }
+//    private void wrongPasswordNotification() {
+//
+//    }
 
     private void goMainActivity() {
         Intent i = new Intent(this, MainActivity.class);
@@ -78,16 +74,33 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
-    private void goRegisterActivity() {
-        Intent i = new Intent(this, RegisterActivity.class);
-        startActivity(i);
-        finish();
+    public void goRegisterActivity() {
+        btnRegister = findViewById(R.id.login_register_instead);
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
     }
 
     private void goForgotActivity() {
-        Intent i = new Intent(this, ForgotActivity.class);
-        startActivity(i);
-        finish();
+        btnForgot = findViewById(R.id.forgot_pass);
+        btnForgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(LoginActivity.this, ForgotPassActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
+    }
+    private boolean check(String username, String password){
+        return true;
     }
 
 }
