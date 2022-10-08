@@ -20,6 +20,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
@@ -83,17 +84,37 @@ public class RegisterActivity extends AppCompatActivity {
                 }
 
                 //username or email or phone unique na hoile
-                else if(email=="1"){
-                    Toast.makeText(RegisterActivity.this, "This email is already in use.",Toast.LENGTH_LONG).show();
-                }
-                else if(username=="1"){
-                    Toast.makeText(RegisterActivity.this, "This username is taken.",Toast.LENGTH_LONG).show();
-                }
-                else if(mobile=="1"){
-                    Toast.makeText(RegisterActivity.this, "This phone number is already in use.",Toast.LENGTH_LONG).show();
-                }
                 else{
-                    verifyPhoneNumber(mobile);
+
+                    fAuth.createUserWithEmailAndPassword(username,password).addOnCompleteListener(
+                            new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+
+                                    if (task.isSuccessful()) {
+                                        FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
+                                        if(auth==null){
+                                            //unknown error
+                                        }
+                                        else{
+                                            auth.delete();
+                                            verifyPhoneNumber(mobile);
+                                        }
+                                    }
+                                    else {
+                                        try {
+                                            throw task.getException();
+                                        }
+                                        catch (Exception e) {
+                                            Toast.makeText(getApplicationContext(), e.toString(),
+                                                    Toast.LENGTH_SHORT).show();
+                                        }
+
+                                    }
+                                }
+                            });
+
+
                 }
             }
         });
