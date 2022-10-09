@@ -77,7 +77,7 @@ public class OTPActivity extends AppCompatActivity {
                                     }
                                 });
 
-                        startActivity(new Intent(OTPActivity.this, AccEmailActivity.class));
+//                        startActivity(new Intent(OTPActivity.this, AccEmailActivity.class));
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
