@@ -20,6 +20,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
@@ -53,7 +54,7 @@ public class RegisterActivity extends AppCompatActivity {
         sendOtp();
     }
 
-    public void goLoginActivity(){
+    public void goLoginActivity() {
         Button btnLogin = findViewById(R.id.reg_login_btn);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,34 +67,49 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 
-    public void sendOtp(){
+    public void sendOtp() {
         Button btnOtp = findViewById(R.id.reg_btn);
         btnOtp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                email =  ((EditText)findViewById(R.id.regEmail)).getText().toString();
-                username = ((EditText)findViewById(R.id.regUserName)).getText().toString();
-                fullName = ((EditText)findViewById(R.id.regFullName)).getText().toString();
-                password = ((EditText)findViewById(R.id.regPassword)).getText().toString();
-                mobile = ((EditText)findViewById(R.id.regPhoneNumber)).getText().toString();
-                mobile = "+88"+mobile;
+                email = ((EditText) findViewById(R.id.regEmail)).getText().toString();
+                username = ((EditText) findViewById(R.id.regUserName)).getText().toString();
+                fullName = ((EditText) findViewById(R.id.regFullName)).getText().toString();
+                password = ((EditText) findViewById(R.id.regPassword)).getText().toString();
+                mobile = ((EditText) findViewById(R.id.regPhoneNumber)).getText().toString();
+                mobile = "+1" + mobile;
                 Log.wtf("mobile", mobile);
-                if(email=="" || password=="" || mobile == "" || fullName=="" || username==""){
-                    Toast.makeText(RegisterActivity.this, "Information is incorrect.",Toast.LENGTH_LONG).show();
+                if (email == "" || password == "" || mobile == "" || fullName == "" || username == "") {
+                    Toast.makeText(RegisterActivity.this, "Information is incorrect.", Toast.LENGTH_LONG).show();
                 }
 
                 //username or email or phone unique na hoile
-                else if(email=="1"){
-                    Toast.makeText(RegisterActivity.this, "This email is already in use.",Toast.LENGTH_LONG).show();
-                }
-                else if(username=="1"){
-                    Toast.makeText(RegisterActivity.this, "This username is taken.",Toast.LENGTH_LONG).show();
-                }
-                else if(mobile=="1"){
-                    Toast.makeText(RegisterActivity.this, "This phone number is already in use.",Toast.LENGTH_LONG).show();
-                }
-                else{
-                    verifyPhoneNumber(mobile);
+                else {
+
+                    fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+
+                            if (task.isSuccessful()) {
+                                FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
+                                if (auth == null) {
+                                    //unknown error
+                                } else {
+                                    auth.delete();
+                                    verifyPhoneNumber(mobile);
+                                }
+                            } else {
+                                try {
+                                    throw task.getException();
+                                } catch (Exception e) {
+                                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                                }
+
+                            }
+                        }
+                    });
+
+
                 }
             }
         });
@@ -105,10 +121,10 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void onVerificationFailed(@NonNull FirebaseException e) {
-                try{
+                try {
                     throw e;
-                }catch (Exception ea){
-                    Toast.makeText(RegisterActivity.this,ea.toString(),Toast.LENGTH_SHORT).show();
+                } catch (Exception ea) {
+                    Toast.makeText(RegisterActivity.this, ea.toString(), Toast.LENGTH_SHORT).show();
                 }
                 //handle errors
                 //2-kinds
@@ -122,10 +138,12 @@ public class RegisterActivity extends AppCompatActivity {
                 verificationId = s;
                 token = forceResendingToken;
                 Bundle bundle = new Bundle();
-                bundle.putString("verificationId",verificationId);
+                bundle.putString("verificationId", verificationId);
                 bundle.putString("email", email);
                 bundle.putString("password", password);
-                Intent intent = new Intent(RegisterActivity.this,OTPActivity.class);
+                bundle.putString("username", username);
+                bundle.putString("mobile", mobile);
+                Intent intent = new Intent(RegisterActivity.this, OTPActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -138,52 +156,51 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 
-    public void verifyPhoneNumber(String number){
-        PhoneAuthOptions options = PhoneAuthOptions.newBuilder(fAuth)
-                .setActivity(this)
-                .setPhoneNumber(number)
-                .setTimeout(60L, TimeUnit.SECONDS)
-                .setCallbacks(callbacks)
-                .build();
+    public void verifyPhoneNumber(String number) {
+        PhoneAuthOptions options = PhoneAuthOptions.newBuilder(fAuth).setActivity(this).setPhoneNumber(number).setTimeout(60L, TimeUnit.SECONDS).setCallbacks(callbacks).build();
         PhoneAuthProvider.verifyPhoneNumber(options);
     }
 
-    public void authinticateUser(PhoneAuthCredential credential){
+    public void authinticateUser(PhoneAuthCredential credential) {
         fAuth.signInWithCredential(credential).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
-                Toast.makeText(RegisterActivity.this,"success",Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterActivity.this, "success", Toast.LENGTH_SHORT).show();
 
-                fAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(
-                        new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
+                fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
 
-                                if (task.isSuccessful()) {
-                                    Intent intent = new Intent(RegisterActivity.this,AccEmailActivity.class);
-                                    startActivity(intent);
-                                }
-                                else {
+                        if (task.isSuccessful()) {
+
+                            //Database e user er info save kortasi
+                            //uId hoilo key
+                            FirebaseUser uu = FirebaseAuth.getInstance().getCurrentUser();
+                            User user = new User(email, username, password, uu.getUid(), mobile);
+                            user.InsertIntoDb();
+
+
+                            Intent intent = new Intent(RegisterActivity.this, AccEmailActivity.class);
+                            startActivity(intent);
+                        } else {
 
 // Error occurred
-                                    try {
-                                        throw task.getException();
-                                    }
-                                    catch (Exception e) {
-                                        Toast.makeText(getApplicationContext(), e.toString(),
-                                                Toast.LENGTH_SHORT).show();
-                                    }
-
-                                }
+                            try {
+                                throw task.getException();
+                            } catch (Exception e) {
+                                Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
                             }
-                        });
+
+                        }
+                    }
+                });
 
                 startActivity(new Intent(RegisterActivity.this, AccEmailActivity.class));
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(RegisterActivity.this,e.getMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

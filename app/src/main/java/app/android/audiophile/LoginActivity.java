@@ -16,6 +16,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import app.android.audiophile.functions.SimpleDialog;
 
@@ -54,35 +57,36 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String username = etUsername.getEditText().getText().toString();
                 String password = etPassword.getEditText().getText().toString();
-                if (check(username, password) == true) {
 
-                    fAuth.signInWithEmailAndPassword(username, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                //Login Successful
-                                Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
-                            } else {
+                fAuth.signInWithEmailAndPassword(username, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            //Login Successful
 
-                                //Error Occurred
-                                try {
-                                    throw task.getException();
-                                } catch (Exception e) {
-                                    Toast.makeText(getApplicationContext(), "Wrong Credential. Please try again.", Toast.LENGTH_SHORT).show();
 
-                                }
+                            FirebaseUser fuser = FirebaseAuth.getInstance().getCurrentUser();
+                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                            ref.child("Users").child(fuser.getUid()).child("password").setValue(password);
+
+
+                            Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(intent);
+
+                        } else {
+
+                            //Error Occurred
+                            try {
+                                throw task.getException();
+                            } catch (Exception e) {
+                                Toast.makeText(getApplicationContext(), "Wrong Credential. Please try again.", Toast.LENGTH_SHORT).show();
+
                             }
                         }
-                    });
+                    }
+                });
 
-
-                    finish();
-                } else {
-                    Toast.makeText(LoginActivity.this, "username or password incorrect.", Toast.LENGTH_SHORT).show();
-                    SimpleDialog simpleDialog = new SimpleDialog("Login Error", "Invalid username or password. Please try again.");
-                    simpleDialog.show(getSupportFragmentManager(), "login error dialog");
-                    return;
-                }
             }
         });
     }
@@ -115,9 +119,8 @@ public class LoginActivity extends AppCompatActivity {
         btnForgot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(LoginActivity.this, ForgotPassActivity.class);
+                Intent i = new Intent(LoginActivity.this, SelectResetPassActivity.class);
                 startActivity(i);
-                finish();
             }
         });
 

@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "238578672640",
+    "firebase_url": "https://audiophile-c2051-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "audiophile-c2051",
     "storage_bucket": "audiophile-c2051.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "238578672640-q92ba3svic601f8ql1fpmeuv5d5mt38p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.android.audiophile",
+            "certificate_hash": "dc246a3bff840b0256ea27950b140a3b119cbcd8"
+          }
+        },
         {
           "client_id": "238578672640-csbcbg0k1cscorg84efs3h3ogkkt9s26.apps.googleusercontent.com",
           "client_type": 3
