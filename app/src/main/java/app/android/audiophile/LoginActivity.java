@@ -62,9 +62,6 @@ public class LoginActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 //Login Successful
                                 Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                startActivity(intent);
-
                             } else {
 
                                 //Error Occurred
@@ -77,6 +74,9 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         }
                     });
+
+
+                    finish();
                 } else {
                     Toast.makeText(LoginActivity.this, "username or password incorrect.", Toast.LENGTH_SHORT).show();
                     SimpleDialog simpleDialog = new SimpleDialog("Login Error", "Invalid username or password. Please try again.");
