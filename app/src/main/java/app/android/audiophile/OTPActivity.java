@@ -5,10 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.chaos.view.PinView;
@@ -21,8 +19,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 public class OTPActivity extends AppCompatActivity {
 
@@ -47,11 +43,11 @@ public class OTPActivity extends AppCompatActivity {
     }
 
     public void goSomewhere(String verificationId) {
-        Button verify = findViewById(R.id.verifyOtp);
+        Button verify = findViewById(R.id.verifyForgotPassOtp);
         verify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String otp = ((PinView) findViewById(R.id.pin_view)).getText().toString();
+                String otp = ((PinView) findViewById(R.id.pinView)).getText().toString();
                 if (otp.isEmpty()) {
                     //show error
                     return;
@@ -73,9 +69,10 @@ public class OTPActivity extends AppCompatActivity {
                                     FirebaseUser uu = FirebaseAuth.getInstance().getCurrentUser();
                                     User user = new User(email, username, password, uu.getUid(), mobile);
                                     user.InsertIntoDb();
+                                    user.uIdByEmail();
 
 
-                                    Intent intent = new Intent(OTPActivity.this, AccEmailActivity.class);
+                                    Intent intent = new Intent(OTPActivity.this, MainActivity.class);
                                     startActivity(intent);
                                 } else {
                                     try {
