@@ -178,6 +178,7 @@ public class RegisterActivity extends AppCompatActivity {
                             FirebaseUser uu = FirebaseAuth.getInstance().getCurrentUser();
                             User user = new User(email, username, password, uu.getUid(), mobile);
                             user.InsertIntoDb();
+                            user.uIdByEmail();
 
 
                             Intent intent = new Intent(RegisterActivity.this, AccEmailActivity.class);
@@ -195,7 +196,7 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 });
 
-                startActivity(new Intent(RegisterActivity.this, AccEmailActivity.class));
+                startActivity(new Intent(RegisterActivity.this, MainActivity.class));
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

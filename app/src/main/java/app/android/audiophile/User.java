@@ -48,6 +48,23 @@ public class User {
         });
     }
 
+    public void uIdByEmail(){
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        Map<String, Object>mp = new HashMap<>();
+        mp.put(formatEmail(),this.uId);
+        mDatabase.child("Users").child("uIdByEmail").updateChildren(mp);
+    }
+
+    private String formatEmail(){
+        StringBuilder s = new StringBuilder(email);
+        for(int i = 0 ; i < email.length(); i++){
+            if(email.charAt(i)=='.'){
+                s.setCharAt(i,',');
+            }
+        }
+        return s.toString();
+    }
+
     public void addPlaylist(Playlist playlist) {
         playlists.add(playlist);
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
