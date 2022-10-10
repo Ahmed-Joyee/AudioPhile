@@ -34,7 +34,6 @@ public class RegisterActivity extends AppCompatActivity {
     PhoneAuthProvider.OnVerificationStateChangedCallbacks callbacks;
     String verificationId;
     PhoneAuthProvider.ForceResendingToken token;
-    Button resendOtp;
 
 
     String email;
@@ -66,7 +65,6 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-
     public void sendOtp() {
         Button btnOtp = findViewById(R.id.reg_btn);
         btnOtp.setOnClickListener(new View.OnClickListener() {
@@ -77,7 +75,7 @@ public class RegisterActivity extends AppCompatActivity {
                 fullName = ((EditText) findViewById(R.id.regFullName)).getText().toString();
                 password = ((EditText) findViewById(R.id.regPassword)).getText().toString();
                 mobile = ((EditText) findViewById(R.id.regPhoneNumber)).getText().toString();
-                mobile = "+1" + mobile;
+                mobile = "+88" + mobile;
                 Log.wtf("mobile", mobile);
                 if (email == "" || password == "" || mobile == "" || fullName == "" || username == "") {
                     Toast.makeText(RegisterActivity.this, "Information is incorrect.", Toast.LENGTH_LONG).show();
@@ -108,8 +106,6 @@ public class RegisterActivity extends AppCompatActivity {
                             }
                         }
                     });
-
-
                 }
             }
         });
@@ -184,8 +180,7 @@ public class RegisterActivity extends AppCompatActivity {
                             Intent intent = new Intent(RegisterActivity.this, AccEmailActivity.class);
                             startActivity(intent);
                         } else {
-
-// Error occurred
+                            // Error occurred
                             try {
                                 throw task.getException();
                             } catch (Exception e) {

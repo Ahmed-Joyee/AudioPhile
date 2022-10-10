@@ -58,10 +58,9 @@ public class AccEmailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String email = ((EditText) findViewById(R.id.forgetPassEmail)).getText().toString();
-                if(resetByPhone=="0") {
+                if (resetByPhone == "0") {
                     checkEmailExistsOrNot(email);
-                }
-                else{
+                } else {
                     fAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
                         @Override
                         public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
@@ -70,34 +69,31 @@ public class AccEmailActivity extends AppCompatActivity {
                                 Toast.makeText(AccEmailActivity.this, "No user found.", Toast.LENGTH_SHORT).show();
                             } else {
                                 StringBuilder s = new StringBuilder(email);
-                                for(int i = 0; i < email.length(); i++){
-                                    if(email.charAt(i)=='.'){
-                                        s.setCharAt(i,',');
+                                for (int i = 0; i < email.length(); i++) {
+                                    if (email.charAt(i) == '.') {
+                                        s.setCharAt(i, ',');
                                     }
                                 }
                                 DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
                                 mDatabase.child("Users").child("uIdByEmail").child(s.toString()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                        if(!task.isSuccessful()){
+                                        if (!task.isSuccessful()) {
                                             //error
-                                        }
-                                        else{
+                                        } else {
                                             Log.d("Uid", String.valueOf(task.getResult().getValue()));
                                             mDatabase.child("Users").child(String.valueOf(task.getResult().getValue())).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<DataSnapshot> task2) {
-                                                    HashMap<String,Object> user = (HashMap<String, Object>) task2.getResult().getValue();
+                                                    HashMap<String, Object> user = (HashMap<String, Object>) task2.getResult().getValue();
 
                                                     Log.d("Mobile num", (String) user.get("mobile"));
                                                     emailL = (String) user.get("email");
                                                     password = (String) user.get("password");
                                                     verifyPhoneNumber((String) user.get("mobile"));
-                                                    Log.d("email and password", email+"  "+password);
+                                                    Log.d("email and password", email + "  " + password);
                                                 }
                                             });
-//                                            return String.valueOf(task.getResult().getValue());
-
                                         }
                                     }
                                 });
@@ -135,12 +131,12 @@ public class AccEmailActivity extends AppCompatActivity {
             @Override
             public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                 super.onCodeSent(s, forceResendingToken);
-                Toast.makeText(AccEmailActivity.this,"Code sent",Toast.LENGTH_SHORT).show();
+                Toast.makeText(AccEmailActivity.this, "Code sent", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(AccEmailActivity.this, ForgotPassOtpActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("email",emailL);
-                bundle.putString("password",password);
-                bundle.putString("verificationId",s);
+                bundle.putString("email", emailL);
+                bundle.putString("password", password);
+                bundle.putString("verificationId", s);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -159,10 +155,10 @@ public class AccEmailActivity extends AppCompatActivity {
     }
 
     public void authinticateUser(PhoneAuthCredential credential) {
-        Intent intent = new Intent(AccEmailActivity.this,NewCredActivity.class);
+        Intent intent = new Intent(AccEmailActivity.this, NewCredActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString("email",emailL);
-        bundle.putString("password",password);
+        bundle.putString("email", emailL);
+        bundle.putString("password", password);
         intent.putExtras(bundle);
         startActivity(intent);
         //new activity te jabo
