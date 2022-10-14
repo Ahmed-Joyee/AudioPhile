@@ -100,6 +100,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 try {
                                     throw task.getException();
                                 } catch (Exception e) {
+                                    Log.d("problem", e.toString());
                                     Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
                                 }
 
