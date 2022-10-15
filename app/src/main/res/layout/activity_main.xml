@@ -1,28 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/container"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:weightSum="12"
-    android:background="@color/colorPrimary">
+    tools:context=".MainActivity">
 
-    <github.com.st235.lib_expandablebottombar.ExpandableBottomBar
-        android:id="@+id/expandable_bottom_nav"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/bb"
+        android:layout_width="123dp"
+        android:layout_height="97dp"
+        android:clickable="true"
+        android:text="Hello World!" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="30dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="30dp"
-        app:exb_elevation="8dp"
-        app:exb_backgroundColor="#FBF8F1"
-        app:exb_backgroundCornerRadius="25dp"
-        app:exb_itemInactiveColor="#D0B8A8"
-        app:exb_items="@menu/bottom_nav"/>
+        android:layout_weight="1"
+        android:text="Button" />
 
-</RelativeLayout>
+</LinearLayout>
