@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+        android:id="@+id/menu_home"
+        android:icon="@drawable/ic_home"
+        android:title="@string/home"
+        app:exb_color="#FF8888"/>
+
+    <item
+        android:id="@+id/menu_timeline"
+        android:icon="@drawable/ic_timeline"
+        android:title="@string/timeline"
+        app:exb_color="#AAC4FF"/>
+    <item
+        android:id="@+id/menu_discover"
+        android:icon="@drawable/ic_discover"
+        android:title="@string/discover"
+        app:exb_color="#8DB596"/>
+    <item
+        android:id="@+id/menu_notification"
+        android:icon="@drawable/ic_notification"
+        android:title="@string/notification"
+        app:exb_color="#B590CA"/>
+    <item
+        android:id="@+id/menu_more"
+        android:icon="@drawable/ic_more_menu"
+        android:title="@string/more"
+        app:exb_color="#9E7676"/>
+</menu>
