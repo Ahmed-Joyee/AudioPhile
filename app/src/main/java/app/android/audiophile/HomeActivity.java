@@ -15,6 +15,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         goOnlocal();
+        goOnVoice();
     }
 
     public void goOnlocal(){
@@ -23,6 +24,16 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this,PlayerActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+    public void goOnVoice(){
+        Button goToVoice = findViewById(R.id.Voice);
+        goToVoice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this,VoiceMessageActivity.class);
                 startActivity(intent);
             }
         });
