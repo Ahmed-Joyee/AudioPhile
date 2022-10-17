@@ -30,4 +30,6 @@
     <string name="via_mail">Via Email</string>
     <string name="new_credentials">NEW \n CREDENTIALS</string>
     <string name="new_credentials_detail">Your identity has been verified!\n Please set your new password</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

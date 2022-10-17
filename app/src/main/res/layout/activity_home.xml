@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,17 +7,17 @@
     android:orientation="vertical"
     tools:context=".HomeActivity">
 
-    <Button
-        android:id="@+id/local_music"
+    <com.ismaeldivita.chipnavigation.ChipNavigationBar
+        android:id="@+id/chipNavigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorPrimary"
-        android:text="Local" />
+        android:layout_alignParentBottom="true"
+        app:cnb_menuResource="@menu/nav_item"/>
 
-    <Button
-        android:id="@+id/Voice"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorPrimary"
-        android:text="Voice Message" />
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:id="@+id/container"
+        android:layout_above="@+id/chipNavigation" />
+
+</RelativeLayout>
