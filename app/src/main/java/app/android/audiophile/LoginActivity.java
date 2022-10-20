@@ -57,36 +57,41 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String username = etUsername.getEditText().getText().toString();
                 String password = etPassword.getEditText().getText().toString();
-
-                fAuth.signInWithEmailAndPassword(username, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            //Login Successful
-
-
-                            FirebaseUser fuser = FirebaseAuth.getInstance().getCurrentUser();
-                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-                            ref.child("Users").child(fuser.getUid()).child("password").setValue(password);
+                Log.d(TAG, username+" " + password);
+                if(!username.equals("") && !password.equals("")){
+                    Log.d(TAG, "comes here");
+                    fAuth.signInWithEmailAndPassword(username, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                //Login Successful
 
 
-                            Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                            startActivity(intent);
+                                FirebaseUser fuser = FirebaseAuth.getInstance().getCurrentUser();
+                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                                ref.child("Users").child(fuser.getUid()).child("password").setValue(password);
 
-                        } else {
 
-                            //Error Occurred
-                            try {
-                                throw task.getException();
-                            } catch (Exception e) {
-                                Toast.makeText(getApplicationContext(), "Wrong Credential. Please try again.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                startActivity(intent);
 
+                            } else {
+
+                                //Error Occurred
+                                try {
+                                    throw task.getException();
+                                } catch (Exception e) {
+                                    Toast.makeText(getApplicationContext(), "Wrong Credential. Please try again.", Toast.LENGTH_SHORT).show();
+
+                                }
                             }
                         }
-                    }
-                });
-
+                    });
+                }
+                else{
+                    Toast.makeText(LoginActivity.this, "Type Email and Passsword", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -108,7 +113,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(i);
-                finish();
             }
         });
 
