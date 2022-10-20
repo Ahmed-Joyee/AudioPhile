@@ -54,6 +54,12 @@ public class User {
         mp.put(formatEmail(),this.uId);
         mDatabase.child("Users").child("uIdByEmail").updateChildren(mp);
     }
+    public void usernameByEmail(){
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        Map<String, Object>mp = new HashMap<>();
+        mp.put(formatEmail(),this.username);
+        mDatabase.child("Users").child("username").updateChildren(mp);
+    }
 
     private String formatEmail(){
         StringBuilder s = new StringBuilder(email);

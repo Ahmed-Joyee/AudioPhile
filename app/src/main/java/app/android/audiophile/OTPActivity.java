@@ -70,7 +70,7 @@ public class OTPActivity extends AppCompatActivity {
                                     User user = new User(email, username, password, uu.getUid(), mobile);
                                     user.InsertIntoDb();
                                     user.uIdByEmail();
-
+                                    user.usernameByEmail();
 
                                     Intent intent = new Intent(OTPActivity.this, MainActivity.class);
                                     startActivity(intent);

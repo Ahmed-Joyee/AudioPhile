@@ -176,7 +176,7 @@ public class RegisterActivity extends AppCompatActivity {
                             User user = new User(email, username, password, uu.getUid(), mobile);
                             user.InsertIntoDb();
                             user.uIdByEmail();
-
+                            user.usernameByEmail();
 
                             Intent intent = new Intent(RegisterActivity.this, AccEmailActivity.class);
                             startActivity(intent);
