@@ -24,7 +24,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -159,6 +163,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void authinticateUser(PhoneAuthCredential credential) {
+
         fAuth.signInWithCredential(credential).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
@@ -177,7 +182,9 @@ public class RegisterActivity extends AppCompatActivity {
                             user.InsertIntoDb();
                             user.uIdByEmail();
                             user.usernameByEmail();
-
+                            Map<String, Object> xx = new HashMap<>();
+                            xx.put("username",username);
+                            putInFirebaseStore(xx);
                             Intent intent = new Intent(RegisterActivity.this, AccEmailActivity.class);
                             startActivity(intent);
                         } else {
@@ -198,6 +205,20 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(RegisterActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    public void putInFirebaseStore(Map<String,Object> xx){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("users").add(xx).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                //success
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                //failure
             }
         });
     }

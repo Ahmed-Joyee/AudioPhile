@@ -4,12 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.Inflater;
 
@@ -20,7 +23,7 @@ public class SearchFriends extends AppCompatActivity implements SearchView.OnQue
 
     ActivitySearchFriendsBinding binding;
     ArrayAdapter<String> adapter;
-    List<String> names;
+    List<String> names = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +37,14 @@ public class SearchFriends extends AppCompatActivity implements SearchView.OnQue
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = new MenuInflater(getApplicationContext());
-        menuInflater.inflate(R.menu.topbar,menu);
+//        MenuInflater menuInflater = new MenuInflater(getApplicationContext());
+//        menuInflater.inflate(R.menu.topbar,menu);
+        getMenuInflater().inflate(R.menu.topbar, menu);
         MenuItem search = menu.findItem(R.id.search_top);
-        SearchView searchView = (SearchView)search.getActionView();
+        SearchView searchView = new SearchView(this);
+        searchView = (SearchView)search.getActionView();
         searchView.setSubmitButtonEnabled(true);
-        searchView.setOnQueryTextListener((SearchView.OnQueryTextListener) this);
+        searchView.setOnQueryTextListener(this);
         return super.onCreateOptionsMenu(menu);
     }
 

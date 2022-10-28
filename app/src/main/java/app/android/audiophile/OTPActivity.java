@@ -19,6 +19,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class OTPActivity extends AppCompatActivity {
 
@@ -64,14 +69,14 @@ public class OTPActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
 
                                 if (task.isSuccessful()) {
-
-
                                     FirebaseUser uu = FirebaseAuth.getInstance().getCurrentUser();
                                     User user = new User(email, username, password, uu.getUid(), mobile);
                                     user.InsertIntoDb();
                                     user.uIdByEmail();
                                     user.usernameByEmail();
-
+                                    Map<String, Object> xx = new HashMap<>();
+                                    xx.put("username",username);
+                                    putInFirebaseStore(xx);
                                     Intent intent = new Intent(OTPActivity.this, MainActivity.class);
                                     startActivity(intent);
                                 } else {
@@ -94,4 +99,22 @@ public class OTPActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void putInFirebaseStore(Map<String,Object> xx){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("users").add(xx).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                //success
+                Toast.makeText(OTPActivity.this,"firestore e probably add hoise", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                //failure
+                Toast.makeText(OTPActivity.this,"firestore e add hoynai", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }
