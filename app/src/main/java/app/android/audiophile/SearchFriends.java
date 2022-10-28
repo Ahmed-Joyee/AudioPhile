@@ -1,5 +1,6 @@
 package app.android.audiophile;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 
@@ -12,8 +13,15 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.Inflater;
 
 import app.android.audiophile.databinding.ActivitySearchFriendsBinding;
@@ -28,9 +36,11 @@ public class SearchFriends extends AppCompatActivity implements SearchView.OnQue
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_search_friends);
         binding = ActivitySearchFriendsBinding.inflate(getLayoutInflater());
         ListView rec = findViewById(R.id.topBarLstView);
+        populateUserList();
         adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, names);
         rec.setAdapter(adapter);
     }
@@ -62,5 +72,23 @@ public class SearchFriends extends AppCompatActivity implements SearchView.OnQue
             adapter.getFilter().filter(newText);
         }
         return true;
+    }
+
+    public void populateUserList(){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    for(QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                        Map<String, Object> mp = documentSnapshot.getData();
+                        String username = "username";
+                        names.add((String) mp.get(username));
+                    }
+                }else{
+                    Log.wtf("SearchFriends", task.getException());
+                }
+            }
+        });
     }
 }
