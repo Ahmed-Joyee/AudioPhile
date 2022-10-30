@@ -6,12 +6,19 @@ import android.Manifest;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -21,11 +28,28 @@ import com.devlomi.record_view.OnRecordListener;
 import com.devlomi.record_view.RecordButton;
 import com.devlomi.record_view.RecordPermissionHandler;
 import com.devlomi.record_view.RecordView;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import org.checkerframework.checker.index.qual.LengthOf;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+
+import javax.crypto.AEADBadTagException;
+
+import app.android.audiophile.databinding.FragmentChatBinding;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,6 +58,10 @@ import java.util.concurrent.TimeUnit;
  */
 public class ChatFragment extends Fragment {
 
+    private FragmentChatBinding binding;
+    ArrayList<UsernameAndUId> names = new ArrayList<>();
+    FriendsListApapter adapter;
+    private String myUId;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -82,97 +110,69 @@ public class ChatFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
-
-        audioRecorder = new AudioRecorder();
-
-        RecordView recordView = view.findViewById(R.id.record1_view);
-        final RecordButton recordButton = view.findViewById(R.id.record1_button);
-        Button btnChangeOnclick = view.findViewById(R.id.btn1_change_onclick);
-
-        // To Enable Record Lock
-//        recordView.setLockEnabled(true);
-//        recordView.setRecordLockImageView(findViewById(R.id.record_lock));
-        //IMPORTANT
-        recordButton.setRecordView(recordView);
-
-        recordView.setOnRecordListener(new OnRecordListener() {
-            @Override
-            public void onStart() {
-                //Start Recording..
-                recordFile = new File(getActivity().getFilesDir(), UUID.randomUUID().toString() + ".3gp");
-                try {
-                    audioRecorder.start(recordFile.getPath());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Log.d("RecordView", "onStart");
-            }
-
-            @Override
-            public void onCancel() {
-                //On Swipe To Cancel
-                stopRecording(true);
-                Log.d("RecordView", "onCancel");
-
-            }
-
-            @Override
-            public void onFinish(long recordTime, boolean limitReached) {
-                //Stop Recording..
-                //limitReached to determine if the Record was finished when time limit reached.
-                stopRecording(false);
-                String time = getHumanTimeText(recordTime);
-                Toast.makeText(getActivity(), "onFinishRecord - Recorded Time is: " + time + " File saved at " + recordFile.getPath(), Toast.LENGTH_SHORT).show();
-                Log.d("RecordView", "onFinish" + " Limit Reached? " + limitReached);
-                Log.d("RecordView", "onFinish");
-
-                Log.d("RecordTime", time);
-            }
-
-            @Override
-            public void onLessThanSecond() {
-                //When the record time is less than One Second
-                stopRecording(true);
-                Log.d("RecordView", "onLessThanSecond");
-            }
-        });
-        recordView.setRecordPermissionHandler(new RecordPermissionHandler() {
-            @Override
-            public boolean isPermissionGranted() {
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                    return true;
-                }
-
-                boolean recordPermissionAvailable = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.RECORD_AUDIO) == PERMISSION_GRANTED;
-                if (recordPermissionAvailable) {
-                    return true;
-                }
-
-
-                ActivityCompat.
-                        requestPermissions(getActivity(),
-                                new String[]{Manifest.permission.RECORD_AUDIO},
-                                0);
-
-                return false;
-
-            }
-        });
-        return view;
+        binding = FragmentChatBinding.bind(view);
+        Util util = new Util();
+        myUId = util.getUId();
+        binding.chatRV.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        populate();
+        adapter = new FriendsListApapter(names, view.getContext());
+        binding.chatRV.setAdapter(adapter);
+        setHasOptionsMenu(true);
+        return binding.getRoot();
     }
 
-    private void stopRecording(boolean deleteFile) {
-        audioRecorder.stop();
-        if (recordFile != null && deleteFile) {
-            recordFile.delete();
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.topbar, menu);
+        MenuItem search = menu.findItem(R.id.search_top);
+        SearchView searchView = new SearchView(getContext());
+        searchView = (SearchView)search.getActionView();
+        searchView.setSubmitButtonEnabled(true);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filter(newText);
+                return false;
+            }
+        });
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    private void filter(String text) {
+        ArrayList<UsernameAndUId> filteredlist = new ArrayList<UsernameAndUId>();
+        for (UsernameAndUId item : names) {
+            if (item.getUsername().toLowerCase().contains(text.toLowerCase())) {
+                filteredlist.add(item);
+            }
+        }
+        if (filteredlist.isEmpty()) {
+            adapter.filterList(filteredlist);
+        } else {
+            adapter.filterList(filteredlist);
         }
     }
 
+    public void populate(){
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.child("Users").child(myUId).child("Friends").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    UsernameAndUId usernameAndUId = dataSnapshot.getValue(UsernameAndUId.class);
+                    names.add(usernameAndUId);
+                }
+                Log.d("asd", new Integer(names.size()).toString());
+            }
 
-    private String getHumanTimeText(long milliseconds) {
-        return String.format("%02d:%02d",
-                TimeUnit.MILLISECONDS.toMinutes(milliseconds),
-                TimeUnit.MILLISECONDS.toSeconds(milliseconds) -
-                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(milliseconds)));
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

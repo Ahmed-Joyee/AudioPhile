@@ -3,6 +3,8 @@ package app.android.audiophile;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -27,22 +30,23 @@ import java.util.zip.Inflater;
 import app.android.audiophile.databinding.ActivitySearchFriendsBinding;
 import app.android.audiophile.databinding.FragmentSearchFriendsBinding;
 
-public class SearchFriends extends AppCompatActivity implements SearchView.OnQueryTextListener{
+public class SearchFriends extends AppCompatActivity{
 
     ActivitySearchFriendsBinding binding;
-    ArrayAdapter<String> adapter;
-    List<String> names = new ArrayList<>();
+//    ArrayAdapter<String> adapter;
+    SearchFriendsAdapter adapter;
+    ArrayList<UsernameAndUId> names = new ArrayList<>();
+    RecyclerView rec;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_search_friends);
+
         binding = ActivitySearchFriendsBinding.inflate(getLayoutInflater());
-        ListView rec = findViewById(R.id.topBarLstView);
-        populateUserList();
-        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, names);
-        rec.setAdapter(adapter);
+        setContentView(R.layout.activity_search_friends);
+        rec = findViewById(R.id.topBarLstView);
+        buildRecyclerView();
     }
 
     @Override
@@ -54,26 +58,36 @@ public class SearchFriends extends AppCompatActivity implements SearchView.OnQue
         SearchView searchView = new SearchView(this);
         searchView = (SearchView)search.getActionView();
         searchView.setSubmitButtonEnabled(true);
-        searchView.setOnQueryTextListener(this);
-        return super.onCreateOptionsMenu(menu);
-    }
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
 
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        if(query != null){
-            adapter.getFilter().filter(query);
-        }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                filter(newText);
+                return false;
+            }
+        });
         return true;
     }
 
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        if(newText != null){
-            adapter.getFilter().filter(newText);
+    private void filter(String text) {
+        ArrayList<UsernameAndUId> filteredlist = new ArrayList<UsernameAndUId>();
+        Log.d("Names size", new Integer(names.size()).toString());
+        for (UsernameAndUId item : names) {
+            if (item.getUsername().toLowerCase().contains(text.toLowerCase())) {
+                filteredlist.add(item);
+            }
         }
-        return true;
+        if (filteredlist.isEmpty()) {
+            adapter.filterList(filteredlist);
+        } else {
+            adapter.filterList(filteredlist);
+        }
     }
-
     public void populateUserList(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -83,12 +97,25 @@ public class SearchFriends extends AppCompatActivity implements SearchView.OnQue
                     for(QueryDocumentSnapshot documentSnapshot : task.getResult()){
                         Map<String, Object> mp = documentSnapshot.getData();
                         String username = "username";
-                        names.add((String) mp.get(username));
+                        String uId = "uId";
+                        UsernameAndUId usernameAndUId= new UsernameAndUId( (String) mp.get(uId), (String) mp.get(username));
+                        names.add(usernameAndUId);
                     }
                 }else{
-                    Log.wtf("SearchFriends", task.getException());
+                    Log.d("SearchFriends", task.getException().getMessage());
                 }
             }
         });
+    }
+
+    public void buildRecyclerView(){
+        populateUserList();
+        Log.d("SearchFriends", new Integer(names.size()).toString());
+        adapter = new SearchFriendsAdapter(names, this);
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        rec.setHasFixedSize(true);
+        rec.setLayoutManager(manager);
+
+        rec.setAdapter(adapter);
     }
 }

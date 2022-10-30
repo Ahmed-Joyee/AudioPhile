@@ -73,7 +73,11 @@ public class LoginActivity extends AppCompatActivity {
 
 
                                 Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
+
                                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+
+                                intent.putExtra("userUId", fAuth.getCurrentUser().getUid());
+//                                intent.putExtras(bundle);
                                 startActivity(intent);
 
                             } else {

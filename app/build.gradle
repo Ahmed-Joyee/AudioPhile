@@ -54,5 +54,6 @@ dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.7.20'
     implementation 'com.github.3llomi:RecordView:3.1.1'
     implementation 'com.github.ismaeldivita:chip-navigation-bar:1.4.0'
+    implementation 'com.firebaseui:firebase-ui-database:8.0.2'
 //    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.4.0'
 }

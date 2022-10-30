@@ -20,6 +20,20 @@
         android:theme="@style/Theme.AudioPhile"
         tools:targetApi="31">
         <activity
+            android:name=".FriendProfileActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".MessageActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".SearchFriends"
             android:exported="false">
             <meta-data
@@ -93,7 +107,7 @@
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="false" />
