@@ -17,6 +17,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -75,10 +76,20 @@ public class LoginActivity extends AppCompatActivity {
                                 Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
 
                                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                Bundle bundle = new Bundle();
+                                ref.child("Users").child(fuser.getUid()).child("username").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                        if(task.isSuccessful()) {
+                                            String userUid = (String) task.getResult().getValue();
+                                            bundle.putString("userUid", fAuth.getCurrentUser().getUid());
+                                            bundle.putString("username", userUid);
+                                            intent.putExtras(bundle);
+                                            startActivity(intent);
+                                        }
+                                    }
+                                });
 
-                                intent.putExtra("userUId", fAuth.getCurrentUser().getUid());
-//                                intent.putExtras(bundle);
-                                startActivity(intent);
 
                             } else {
 
@@ -99,10 +110,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
-//    private void wrongPasswordNotification() {
-//
-//    }
 
     private void goMainActivity() {
         Intent i = new Intent(this, MainActivity.class);

@@ -37,15 +37,20 @@ public class SearchFriends extends AppCompatActivity{
     SearchFriendsAdapter adapter;
     ArrayList<UsernameAndUId> names = new ArrayList<>();
     RecyclerView rec;
+    private Bundle bundle;
+    private final String TAG = "SearchFriendsActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        bundle = getIntent().getExtras();
 
         binding = ActivitySearchFriendsBinding.inflate(getLayoutInflater());
         setContentView(R.layout.activity_search_friends);
         rec = findViewById(R.id.topBarLstView);
+
+        Log.d(TAG, (String) bundle.getString("username"));
         buildRecyclerView();
     }
 
@@ -111,7 +116,7 @@ public class SearchFriends extends AppCompatActivity{
     public void buildRecyclerView(){
         populateUserList();
         Log.d("SearchFriends", new Integer(names.size()).toString());
-        adapter = new SearchFriendsAdapter(names, this);
+        adapter = new SearchFriendsAdapter(names, this, bundle);
         LinearLayoutManager manager = new LinearLayoutManager(this);
         rec.setHasFixedSize(true);
         rec.setLayoutManager(manager);

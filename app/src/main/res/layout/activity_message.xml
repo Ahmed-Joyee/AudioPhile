@@ -5,10 +5,12 @@
 
 
     </data>
-    <RelativeLayout
+    <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="2">
 
         <include
             android:id="@+id/toolbar"
@@ -18,35 +20,79 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewMessage"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.8"
+            android:layout_marginBottom="45dp"
             android:layout_below="@+id/toolbar"/>
         <LinearLayout
             android:id="@+id/msgData"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_alignParentBottom="true"
+            android:layout_height="0dp"
+            android:layout_weight=".2"
             android:weightSum="2"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
             android:layout_marginBottom="10dp">
-
-            <TextView
+        <LinearLayout
+            android:id="@+id/messageLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|bottom"
+            android:orientation="horizontal"
+            android:layout_weight="1.8">
+            <EditText
                 android:id="@+id/msgText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|bottom"
+                android:scrollbars="vertical"/>
+        </LinearLayout>
+
+            <com.devlomi.record_view.RecordView
+                android:id="@+id/recordView"
                 android:layout_width="0dp"
-                android:layout_height="38dp"
-                android:layout_gravity="center"
-                android:text="Hold the microphone button to record and release to send message"
-                android:layout_weight="1.8"/>
+                android:layout_height="wrap_content"
+                android:layout_weight="1.8"
+                android:visibility="gone"
+                bind:cancel_text="CANCEL"
+                bind:cancel_text_margin_right="10dp"
+                bind:counter_time_color="#ff0000"
+                bind:slide_to_cancel_arrow="@drawable/recv_ic_arrow"
+                bind:slide_to_cancel_arrow_color="@color/black"
+                bind:slide_to_cancel_text="Slide to cancel"
+                android:layout_alignParentBottom="true"
+                android:layout_toLeftOf="@id/record_button"
+                bind:cancel_text_color="#ff0000"
+                bind:slide_to_cancel_bounds="10dp"
+                bind:slide_to_cancel_margin_right="10dp" />
+
             <ImageView
                 android:id="@+id/btnSend"
                 android:layout_width="0dp"
-                android:layout_height="38dp"
+                android:layout_height="45dp"
+                android:layout_gravity="center|bottom"
+                android:layout_marginEnd="5dp"
                 android:layout_weight=".2"
-                android:src="@drawable/recv_ic_mic"/>
+                android:src="@drawable/ic_send"
+                android:visibility="gone" />
 
+            <com.devlomi.record_view.RecordButton
+                android:id="@+id/recordButton"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_gravity="center|bottom"
+                android:layout_marginEnd="5dp"
+                android:scaleType="centerInside"
+                android:layout_weight=".2"
+                android:background="@drawable/right_side_background"
+                bind:mic_icon="@drawable/recv_ic_mic"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                bind:send_icon="@drawable/recv_ic_send" />
 
         </LinearLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </layout>
 

@@ -1,14 +1,10 @@
 package app.android.audiophile;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -24,8 +20,8 @@ public class User implements Serializable {
     public String password;
     public String uId;
     public String mobile;
-    public List<Playlist> playlists;
-    public List<UsernameAndUId> friends;
+    public List<Playlist> playlists = new ArrayList<>();
+    public List<UsernameAndUId> friends = new ArrayList<>();
 //    public Map<String, String>friends;
 
     public String getEmail() {
@@ -76,52 +72,53 @@ public class User implements Serializable {
         this.playlists = playlists;
     }
 
-
-
-
-
-    public User() {
-
+    public User(String _username, String _uId){
+        this.username = _username;
+        this.uId = _uId;
     }
 
     public User(String _email, String _username, String _password, String _uId, String _mobile) {
-        email = _email;
-        username = _username;
-        password = _password;
-        uId = _uId;
-        mobile = _mobile;
-        playlists = new ArrayList<>();
-        friends = new ArrayList<>();
+        this.email = _email;
+        this.username = _username;
+        this.password = _password;
+        this.uId = _uId;
+        this.mobile = _mobile;
+        this.playlists = new ArrayList<>();
+        this.friends = new ArrayList<>();
+    }
+
+    public User(){
+
     }
 
     public User(String _email, String _username, String _password, String _uId, String _mobile, ArrayList<Playlist>_playlists) {
-        email = _email;
-        username = _username;
-        password = _password;
-        uId = _uId;
-        mobile = _mobile;
-        playlists = _playlists;
-        friends = new ArrayList<>();
+        this.email = _email;
+        this.username = _username;
+        this.password = _password;
+        this.uId = _uId;
+        this.mobile = _mobile;
+        this.playlists = _playlists;
+        this.friends = new ArrayList<>();
     }
 
     public User(String _email, String _username, String _password, String _uId, String _mobile, ArrayList<Playlist>_playlists, List<UsernameAndUId> _friends) {
-        email = _email;
-        username = _username;
-        password = _password;
-        uId = _uId;
-        mobile = _mobile;
-        playlists = _playlists;
-        friends = _friends;
+        this.email = _email;
+        this.username = _username;
+        this.password = _password;
+        this.uId = _uId;
+        this.mobile = _mobile;
+        this.playlists = _playlists;
+        this.friends = _friends;
     }
 
     public User(String _email, String _username, String _password, String _uId, String _mobile, List<UsernameAndUId> _friends) {
-        email = _email;
-        username = _username;
-        password = _password;
-        uId = _uId;
-        mobile = _mobile;
-        playlists = new ArrayList<>();
-        friends = _friends;
+        this.email = _email;
+        this.username = _username;
+        this.password = _password;
+        this.uId = _uId;
+        this.mobile = _mobile;
+        this.playlists = new ArrayList<>();
+        this.friends = _friends;
     }
 
     public void InsertIntoDb() {
@@ -177,8 +174,18 @@ public class User implements Serializable {
     }
 
     public void addFriends(User user) {
-        friends.add(new UsernameAndUId(user.uId, user.username));
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("Users").child(this.uId).child("Friends").setValue(friends);
+        boolean no = false;
+        for(UsernameAndUId item : friends){
+            if(item.getuId()==user.getuId()){
+                no = true;
+
+                break;
+            }
+        }
+        if(!no) {
+            friends.add(new UsernameAndUId(user.uId, user.username));
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+            mDatabase.child("Users").child(this.uId).child("Friends").setValue(friends);
+        }
     }
 }

@@ -78,7 +78,7 @@ public class OTPActivity extends AppCompatActivity {
                                     xx.put("username",username);
                                     xx.put("uId", user.getuId());
                                     putInFirebaseStore(xx);
-                                    user.addFriends(user);
+//                                    user.addFriends(user);
                                     Intent intent = new Intent(OTPActivity.this, MainActivity.class);
                                     startActivity(intent);
                                 } else {

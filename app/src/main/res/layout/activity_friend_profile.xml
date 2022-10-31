@@ -4,13 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".FriendProfileActivity">
     <TextView
         android:id="@+id/friendName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="43sp" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
         />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Add Friend"
+        android:backgroundTint="@color/colorPrimary"
+        android:textColor="@color/black"
+        android:id="@+id/addFriend"/>
+
 
 </LinearLayout>

@@ -18,11 +18,13 @@ public class SearchFriendsAdapter extends RecyclerView.Adapter<SearchFriendsAdap
 
     ArrayList<UsernameAndUId>names;
     Context context;
+    Bundle bundle;
 
 
-    public SearchFriendsAdapter(ArrayList<UsernameAndUId> names, Context context) {
+    public SearchFriendsAdapter(ArrayList<UsernameAndUId> names, Context context, Bundle _bundle) {
         this.names = names;
         this.context = context;
+        this.bundle = _bundle;
     }
 
     @NonNull
@@ -39,7 +41,6 @@ public class SearchFriendsAdapter extends RecyclerView.Adapter<SearchFriendsAdap
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, FriendProfileActivity.class);
-                Bundle bundle = new Bundle();
                 bundle.putString("hisUsername", names.get(position).getUsername());
                 bundle.putString("hisUId",names.get(position).getuId());
                 intent.putExtras(bundle);

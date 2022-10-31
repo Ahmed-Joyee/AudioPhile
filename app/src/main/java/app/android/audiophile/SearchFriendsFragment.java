@@ -28,7 +28,7 @@ public class SearchFriendsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    private Bundle bundle;
     View view;
 
     public SearchFriendsFragment() {
@@ -48,6 +48,7 @@ public class SearchFriendsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        bundle = getArguments();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -73,7 +74,9 @@ public class SearchFriendsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Log.wtf("asfdasd","sdfsadf");
-                startActivity(new Intent(getActivity(),SearchFriends.class));
+                Intent intent = new Intent(getActivity(),SearchFriends.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
     }

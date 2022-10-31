@@ -14,15 +14,18 @@ public class HomeActivity extends AppCompatActivity {
 
     private ChipNavigationBar chipNavigationBar;
     private Fragment fragment = null;
+    private String username, userUid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
+        Bundle bundle = getIntent().getExtras();
         chipNavigationBar = findViewById(R.id.chipNavigation);
         chipNavigationBar.setItemSelected(R.id.chat, true);
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, new ChatFragment()).commit();
+        fragment = new ChatFragment();
+        fragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
 
         chipNavigationBar.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
             @Override
@@ -43,6 +46,7 @@ public class HomeActivity extends AppCompatActivity {
                 }
 
                 if(fragment != null){
+                    fragment.setArguments(bundle);
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
                 }
             }
