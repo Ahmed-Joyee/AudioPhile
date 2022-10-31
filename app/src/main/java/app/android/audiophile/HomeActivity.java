@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -33,15 +34,19 @@ public class HomeActivity extends AppCompatActivity {
                 switch (i){
                     case R.id.chat:
                         fragment = new ChatFragment();
+                        if(MyMediaPlayer.getInstance().isPlaying())MyMediaPlayer.getInstance().stop();
                         break;
                     case R.id.profile:
                         fragment = new ProfileFragment();
+                        if(MyMediaPlayer.getInstance().isPlaying())MyMediaPlayer.getInstance().stop();
                         break;
                     case R.id.local:
                         fragment = new LocalSongsFragment();
+                        if(!MyMediaPlayer.getInstance().isPlaying())MyMediaPlayer.getInstance().reset();
                         break;
                     case R.id.friend:
                         fragment = new SearchFriendsFragment();
+                        if(MyMediaPlayer.getInstance().isPlaying())MyMediaPlayer.getInstance().stop();
                         break;
                 }
 
@@ -51,5 +56,9 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+    @Override
+    public void onBackPressed() {
+
     }
 }

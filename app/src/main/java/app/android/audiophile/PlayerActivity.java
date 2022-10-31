@@ -2,6 +2,7 @@ package app.android.audiophile;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -89,6 +91,16 @@ public class PlayerActivity extends AppCompatActivity {
         if(recyclerView!=null){
             recyclerView.setAdapter(new MusicListAdapter(songsList,getApplicationContext()));
         }
+    }
+    @Override
+    public void onBackPressed() {
+        Log.d("CDA", "onBackPressed Called");
+        Intent setIntent = new Intent(PlayerActivity.this,NoInternetActivity.class);
+        MyMediaPlayer.getInstance().stop();
+//        MyMediaPlayer.getInstance().release();
+//        setIntent.addCategory(Intent.CATEGORY_HOME);
+//        setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(setIntent);
     }
 
 

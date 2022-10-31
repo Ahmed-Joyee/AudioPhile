@@ -24,7 +24,8 @@ public class MusicPlayerActivity extends AppCompatActivity {
     ImageView pausePlay,nextBtn,previousBtn,musicIcon;
     ArrayList<AudioModel> songsList;
     AudioModel currentSong;
-    MediaPlayer mediaPlayer = MyMediaPlayer.getInstance();
+    MediaPlayer mediaPlayer;
+    int setSeek;
     int x=0;
 
     @Override
@@ -32,6 +33,9 @@ public class MusicPlayerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music_player);
 
+
+        setSeek = getIntent().getIntExtra("setSeek", 0);
+        Log.d("MusicPlayerActivity", new Integer(setSeek).toString());
         titleTv = findViewById(R.id.song_title);
         currentTimeTv = findViewById(R.id.current_time);
         totalTimeTv = findViewById(R.id.total_time);
@@ -108,17 +112,22 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     private void playMusic(){
 
-        mediaPlayer.reset();
-        try {
-            mediaPlayer.setDataSource(currentSong.getPath());
-            mediaPlayer.prepare();
-            mediaPlayer.start();
-            seekBar.setProgress(0);
-            seekBar.setMax(mediaPlayer.getDuration());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        if(setSeek!= 0) {
 
+        }else {
+            mediaPlayer = MyMediaPlayer.getInstance();
+            mediaPlayer.reset();
+            try {
+                mediaPlayer.setDataSource(currentSong.getPath());
+                mediaPlayer.prepare();
+                mediaPlayer.start();
+//                mediaPlayer.seekTo(setSeek);
+//                seekBar.setProgress(setSeek);
+                seekBar.setMax(mediaPlayer.getDuration());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 

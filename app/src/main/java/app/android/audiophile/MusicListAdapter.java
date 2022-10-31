@@ -3,6 +3,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,12 +47,26 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
             public void onClick(View v) {
                 //navigate to another acitivty
 
-                MyMediaPlayer.getInstance().reset();
-                MyMediaPlayer.currentIndex = pos;
-                Intent intent = new Intent(context,MusicPlayerActivity.class);
-                intent.putExtra("LIST",songsList);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
+                if(MyMediaPlayer.currentIndex!=pos) {
+                    MyMediaPlayer.getInstance().reset();
+                    Log.d("MusicListAdapter", "works");
+                    MyMediaPlayer.currentIndex = pos;
+                    Intent intent = new Intent(context, MusicPlayerActivity.class);
+                    intent.putExtra("LIST", songsList);
+                    intent.putExtra("setSeek",0);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                }
+                else{
+                    Integer xx = MyMediaPlayer.getInstance().getCurrentPosition();
+                    Log.d("MusicListAdapter", xx.toString());
+                    Intent intent = new Intent(context, MusicPlayerActivity.class);
+                    intent.putExtra("LIST", songsList);
+                    intent.putExtra("setSeek", MyMediaPlayer.getInstance().getCurrentPosition());
+//                    MyMediaPlayer.getInstance().reset();
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                }
 
             }
         });
