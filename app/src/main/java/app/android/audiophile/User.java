@@ -5,8 +5,11 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -181,19 +184,37 @@ public class User implements Serializable {
         mDatabase.child("Users").child(this.uId).setValue(this);
     }
 
-    public void addFriends(User user) {
+    public boolean isAlreadyFriend(User user){
         boolean no = false;
-        for(UsernameAndUId item : friends){
+        for(UsernameAndUId item : this.friends){
             if(item.getuId()==user.getuId()){
                 no = true;
-
-                break;
+                return no;
             }
         }
-        if(!no) {
-            friends.add(new UsernameAndUId(user.uId, user.username));
+        return false;
+    }
+    public void addFriends(User user) {
+
+
+//            friends.add(new UsernameAndUId(user.uId, user.username));
             DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-            mDatabase.child("Users").child(this.uId).child("friends").setValue(friends);
-        }
+            mDatabase.child("Users").child(this.uId).child("friends").orderByChild("uId").equalTo(user.getuId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if(snapshot.getChildrenCount() > 0){
+                        Log.d("User", "works");
+                    }else{
+                        friends.add(new UsernameAndUId(user.uId, user.username));
+                        mDatabase.child("Users").child(uId).child("friends").setValue(friends);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
     }
 }

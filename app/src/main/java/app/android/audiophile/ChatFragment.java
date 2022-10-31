@@ -167,10 +167,9 @@ public class ChatFragment extends Fragment {
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()){
                     UsernameAndUId usernameAndUId = dataSnapshot.getValue(UsernameAndUId.class);
                     names.add(usernameAndUId);
-
                 }
                 adapter.filterList(names);
-                Log.d("asd", new Integer(names.size()).toString());
+                Log.d("ChatFragmentfFriendsize", new Integer(names.size()).toString());
             }
 
             @Override
