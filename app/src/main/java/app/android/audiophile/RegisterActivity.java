@@ -17,7 +17,10 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseException;
+import com.google.firebase.appcheck.FirebaseAppCheck;
+import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -52,6 +55,11 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
 
+        FirebaseApp.initializeApp(/*context=*/ this);
+        FirebaseAppCheck firebaseAppCheck = FirebaseAppCheck.getInstance();
+        firebaseAppCheck.installAppCheckProviderFactory(
+                SafetyNetAppCheckProviderFactory.getInstance());
+
         fAuth = FirebaseAuth.getInstance();
         goLoginActivity();
         sendOtp();
@@ -79,7 +87,7 @@ public class RegisterActivity extends AppCompatActivity {
                 fullName = ((EditText) findViewById(R.id.regFullName)).getText().toString();
                 password = ((EditText) findViewById(R.id.regPassword)).getText().toString();
                 mobile = ((EditText) findViewById(R.id.regPhoneNumber)).getText().toString();
-                mobile = "+88" + mobile;
+                mobile = "+1" + mobile;
                 Log.wtf("mobile", mobile);
                 if (email == "" || password == "" || mobile == "" || fullName == "" || username == "") {
                     Toast.makeText(RegisterActivity.this, "Information is incorrect.", Toast.LENGTH_LONG).show();
