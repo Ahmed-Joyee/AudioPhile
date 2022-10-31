@@ -70,7 +70,7 @@ public class OTPActivity extends AppCompatActivity {
 
                                 if (task.isSuccessful()) {
                                     FirebaseUser uu = FirebaseAuth.getInstance().getCurrentUser();
-                                    User user = new User(email, username, password, uu.getUid(), mobile);
+                                    User user = new User(email, username, password, uu.getUid(), mobile, true, true);
                                     user.InsertIntoDb();
                                     user.uIdByEmail();
                                     user.usernameByEmail();
@@ -79,7 +79,7 @@ public class OTPActivity extends AppCompatActivity {
                                     xx.put("uId", user.getuId());
                                     putInFirebaseStore(xx);
 //                                    user.addFriends(user);
-                                    Intent intent = new Intent(OTPActivity.this, MainActivity.class);
+                                    Intent intent = new Intent(OTPActivity.this, LoginActivity.class);
                                     startActivity(intent);
                                 } else {
                                     try {

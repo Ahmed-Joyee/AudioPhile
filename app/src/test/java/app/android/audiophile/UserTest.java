@@ -9,7 +9,7 @@ public class UserTest extends TestCase {
     public void setUp() throws Exception {
         super.setUp();
 
-        u = new User("t@t.com", "uname", "pass","abcd1","sfg");
+        u = new User("t@t.com", "uname", "pass","abcd1","sfg", false, false);
     }
 
     public void testInsertIntoDb() {

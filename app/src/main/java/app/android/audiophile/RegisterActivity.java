@@ -1,5 +1,7 @@
 package app.android.audiophile;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,6 +23,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.appcheck.FirebaseAppCheck;
 import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory;
+import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -63,6 +66,7 @@ public class RegisterActivity extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         goLoginActivity();
         sendOtp();
+        sendLink();
     }
 
     public void goLoginActivity() {
@@ -77,8 +81,67 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+    public void sendLink(){
+        Button btnLink = findViewById(R.id.reg_btn_email);
+        btnLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                email = ((EditText) findViewById(R.id.regEmail)).getText().toString();
+                username = ((EditText) findViewById(R.id.regUserName)).getText().toString();
+                fullName = ((EditText) findViewById(R.id.regFullName)).getText().toString();
+                password = ((EditText) findViewById(R.id.regPassword)).getText().toString();
+                mobile = ((EditText) findViewById(R.id.regPhoneNumber)).getText().toString();
+                mobile = "+1" + mobile;
+                Log.wtf("mobile", mobile);
+                if (email == "" || password == "" || mobile == "" || fullName == "" || username == "") {
+                    Toast.makeText(RegisterActivity.this, "Information is incorrect.", Toast.LENGTH_LONG).show();
+                }
+
+                //username or email or phone unique na hoile
+                else {
+
+                    fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+
+                            if (task.isSuccessful()) {
+                                FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
+
+                                if (auth == null) {
+                                    //unknown error
+                                } else {
+                                    FirebaseUser uu = FirebaseAuth.getInstance().getCurrentUser();
+                                    User user = new User(email, username, password, uu.getUid(), mobile, false, false);
+                                    user.InsertIntoDb();
+                                    user.uIdByEmail();
+                                    user.usernameByEmail();
+                                    Map<String, Object> xx = new HashMap<>();
+                                    xx.put("username",username);
+                                    xx.put("uId", uu.getUid());
+                                    putInFirebaseStore(xx);
+                                    auth.sendEmailVerification();
+                                    Toast.makeText(RegisterActivity.this, "Verification Link Sent To Email", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                                    startActivity(intent);
+                                }
+                            } else {
+                                try {
+                                    throw task.getException();
+                                } catch (Exception e) {
+                                    Log.d("problem", e.toString());
+                                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                                }
+
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
     public void sendOtp() {
-        Button btnOtp = findViewById(R.id.reg_btn);
+        Button btnOtp = findViewById(R.id.reg_btn_otp);
         btnOtp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -186,12 +249,13 @@ public class RegisterActivity extends AppCompatActivity {
                             //Database e user er info save kortasi
                             //uId hoilo key
                             FirebaseUser uu = FirebaseAuth.getInstance().getCurrentUser();
-                            User user = new User(email, username, password, uu.getUid(), mobile);
+                            User user = new User(email, username, password, uu.getUid(), mobile, true, true);
                             user.InsertIntoDb();
                             user.uIdByEmail();
                             user.usernameByEmail();
                             Map<String, Object> xx = new HashMap<>();
                             xx.put("username",username);
+                            xx.put("uId", uu.getUid());
                             putInFirebaseStore(xx);
                             Intent intent = new Intent(RegisterActivity.this, AccEmailActivity.class);
                             startActivity(intent);

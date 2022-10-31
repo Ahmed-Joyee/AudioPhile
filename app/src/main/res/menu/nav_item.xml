@@ -31,6 +31,6 @@
         app:cnb_backgroundColor="@color/colorPrimary"
         app:cnb_iconColor="#ffffff"
         app:cnb_textColor="#ffffff"
-        android:title="Profile"/>
+        android:title="Search Friend"/>
 
 </menu>

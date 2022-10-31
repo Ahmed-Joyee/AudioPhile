@@ -153,14 +153,35 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/reg_btn"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/go"
+        android:weightSum="2.5"
+        android:orientation="horizontal">
+    <Button
+        android:id="@+id/reg_btn_otp"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:text="OTP"
         android:backgroundTint="@color/colorAccent"
         android:textColor="#fff"
         android:transitionName="button_tran"/>
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".5"/>
+        <Button
+            android:id="@+id/reg_btn_email"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Link"
+            android:backgroundTint="@color/colorAccent"
+            android:textColor="#fff"
+            android:transitionName="button_tran"/>
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/reg_login_btn"

@@ -25,10 +25,27 @@ public class User implements Serializable {
     public String mobile;
     public List<Playlist> playlists = new ArrayList<>();
     public List<UsernameAndUId> friends = new ArrayList<>();
+    public Boolean isPhoneVerified, isEmailVerified;
 //    public Map<String, String>friends;
 
     public String getEmail() {
         return email;
+    }
+
+    public Boolean isPhoneVerified() {
+        return isPhoneVerified;
+    }
+
+    public void setPhoneVerified(Boolean phoneVerified) {
+        isPhoneVerified = phoneVerified;
+    }
+
+    public Boolean isEmailVerified() {
+        return isEmailVerified;
+    }
+
+    public void setEmailVerified(Boolean emailVerified) {
+        isEmailVerified = emailVerified;
     }
 
     public void setEmail(String email) {
@@ -88,7 +105,7 @@ public class User implements Serializable {
         this.uId = _uId;
     }
 
-    public User(String _email, String _username, String _password, String _uId, String _mobile) {
+    public User(String _email, String _username, String _password, String _uId, String _mobile, Boolean _isEmailVerified, Boolean _isPhoneVerified) {
         this.email = _email;
         this.username = _username;
         this.password = _password;
@@ -96,13 +113,15 @@ public class User implements Serializable {
         this.mobile = _mobile;
         this.playlists = new ArrayList<>();
         this.friends = new ArrayList<>();
+        this.isPhoneVerified = _isPhoneVerified;
+        this.isEmailVerified = _isEmailVerified;
     }
 
     public User(){
 
     }
 
-    public User(String _email, String _username, String _password, String _uId, String _mobile, ArrayList<Playlist>_playlists) {
+    public User(String _email, String _username, String _password, String _uId, String _mobile, ArrayList<Playlist>_playlists, Boolean _isEmailVerified, Boolean _isPhoneVerified) {
         this.email = _email;
         this.username = _username;
         this.password = _password;
@@ -110,9 +129,11 @@ public class User implements Serializable {
         this.mobile = _mobile;
         this.playlists = _playlists;
         this.friends = new ArrayList<>();
+        this.isPhoneVerified = _isPhoneVerified;
+        this.isEmailVerified = _isEmailVerified;
     }
 
-    public User(String _email, String _username, String _password, String _uId, String _mobile, ArrayList<Playlist>_playlists, List<UsernameAndUId> _friends) {
+    public User(String _email, String _username, String _password, String _uId, String _mobile, ArrayList<Playlist>_playlists, List<UsernameAndUId> _friends,  Boolean _isEmailVerified, Boolean _isPhoneVerified) {
         this.email = _email;
         this.username = _username;
         this.password = _password;
@@ -120,9 +141,11 @@ public class User implements Serializable {
         this.mobile = _mobile;
         this.playlists = _playlists;
         this.friends = _friends;
+        this.isPhoneVerified = _isPhoneVerified;
+        this.isEmailVerified = _isEmailVerified;
     }
 
-    public User(String _email, String _username, String _password, String _uId, String _mobile, List<UsernameAndUId> _friends) {
+    public User(String _email, String _username, String _password, String _uId, String _mobile, List<UsernameAndUId> _friends,  Boolean _isEmailVerified, Boolean _isPhoneVerified) {
         this.email = _email;
         this.username = _username;
         this.password = _password;
@@ -130,6 +153,8 @@ public class User implements Serializable {
         this.mobile = _mobile;
         this.playlists = new ArrayList<>();
         this.friends = _friends;
+        this.isPhoneVerified = _isPhoneVerified;
+        this.isEmailVerified = _isEmailVerified;
     }
 
     public void InsertIntoDb() {

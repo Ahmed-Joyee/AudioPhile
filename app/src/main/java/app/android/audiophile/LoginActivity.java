@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -21,8 +22,13 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import app.android.audiophile.functions.SimpleDialog;
 
@@ -74,41 +80,77 @@ public class LoginActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 //Login Successful
+                                if (fAuth.getCurrentUser().isEmailVerified()) {
+                                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(fAuth.getUid());
+                                    Map<String, Object> mp = new HashMap<>();
+                                    mp.put("isEmailVerified",new Boolean(true));
+                                    mp.put("isPhoneVerified", new Boolean(true));
+                                    databaseReference.updateChildren(mp);
+
+                                    FirebaseUser fuser = FirebaseAuth.getInstance().getCurrentUser();
+                                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                                    ref.child("Users").child(fuser.getUid()).child("password").setValue(password);
 
 
-                                FirebaseUser fuser = FirebaseAuth.getInstance().getCurrentUser();
-                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-                                ref.child("Users").child(fuser.getUid()).child("password").setValue(password);
+                                    Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
 
-
-                                Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
-
-                                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                                Bundle bundle = new Bundle();
-                                ref.child("Users").child(fuser.getUid()).child("username").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                        if(task.isSuccessful()) {
-                                            String userUid = (String) task.getResult().getValue();
-                                            bundle.putString("userUid", fAuth.getCurrentUser().getUid());
-                                            bundle.putString("username", userUid);
-                                            intent.putExtras(bundle);
-                                            startActivity(intent);
+                                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                    Bundle bundle = new Bundle();
+                                    ref.child("Users").child(fuser.getUid()).child("username").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                String userUid = (String) task.getResult().getValue();
+                                                bundle.putString("userUid", fAuth.getCurrentUser().getUid());
+                                                bundle.putString("username", userUid);
+                                                intent.putExtras(bundle);
+                                                startActivity(intent);
+                                            }
                                         }
-                                    }
-                                });
+                                    });
+                                } else {
+                                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(fAuth.getUid());
+                                    databaseReference.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                            User user = task.getResult().getValue(User.class);
+                                            if (user.isEmailVerified() || user.isPhoneVerified()) {
+                                                FirebaseUser fuser = FirebaseAuth.getInstance().getCurrentUser();
+                                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                                                ref.child("Users").child(fuser.getUid()).child("password").setValue(password);
 
 
-                            } else {
+                                                Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
 
-                                //Error Occurred
-                                try {
-                                    throw task.getException();
-                                } catch (Exception e) {
-                                    Toast.makeText(getApplicationContext(), "Wrong Credential. Please try again.", Toast.LENGTH_SHORT).show();
-
+                                                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                                Bundle bundle = new Bundle();
+                                                ref.child("Users").child(fuser.getUid()).child("username").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                                        if (task.isSuccessful()) {
+                                                            String userUid = (String) task.getResult().getValue();
+                                                            bundle.putString("userUid", fAuth.getCurrentUser().getUid());
+                                                            bundle.putString("username", userUid);
+                                                            intent.putExtras(bundle);
+                                                            startActivity(intent);
+                                                        }
+                                                    }
+                                                });
+                                            } else {
+                                                Toast.makeText(LoginActivity.this, "Please Verify Your Email", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
                                 }
-                            }
+                                } else{
+                                    try {
+                                        throw task.getException();
+                                    } catch (Exception e) {
+                                        Toast.makeText(getApplicationContext(), "Wrong Credential. Please try again.", Toast.LENGTH_SHORT).show();
+
+                                    }
+                                }
+
                         }
                     });
                 }
