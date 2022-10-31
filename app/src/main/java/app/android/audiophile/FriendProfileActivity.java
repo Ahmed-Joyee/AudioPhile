@@ -43,6 +43,7 @@ public class FriendProfileActivity extends AppCompatActivity {
                         if(task.isSuccessful()){
                             User user = task.getResult().getValue(User.class);
                             Log.d(TAG, user.getUsername());
+//                            Log.d(TAG, user.getFriends().toString());
                             user.addFriends(new User(hisUsername, hisUId));
                         }
                     }

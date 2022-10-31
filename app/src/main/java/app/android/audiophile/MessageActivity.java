@@ -345,6 +345,17 @@ public class MessageActivity extends AppCompatActivity {
 
     private void sendRecordingMessage(){
         // Create a Cloud Storage reference from the app
+        if(chatUId==null){
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users").child("ChatList").child(myUId);
+            chatUId = databaseReference.push().getKey();
+            ChatListModel chatListModel = new ChatListModel(chatUId, util.currentData(), "A", hisUId);
+            databaseReference.child(chatUId).setValue(chatListModel);
+
+            databaseReference = FirebaseDatabase.getInstance().getReference("Users").child("ChatList").child(hisUId);
+//        chatUId = databaseReference.push().getKey();
+            ChatListModel chatListModel1 = new ChatListModel(chatUId, util.currentData(), "A", myUId);
+            databaseReference.child(chatUId).setValue(chatListModel1);
+        }
         StorageReference storageRef = FirebaseStorage.getInstance().getReference(chatUId + "Media/Recording"+util.getUId() + "/" + System.currentTimeMillis());
         Uri audioFile = Uri.fromFile(recordFile);
         storageRef.putFile(audioFile).addOnSuccessListener(success ->{

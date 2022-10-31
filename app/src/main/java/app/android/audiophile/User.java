@@ -40,6 +40,14 @@ public class User implements Serializable {
         this.username = username;
     }
 
+    public List<UsernameAndUId> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(List<UsernameAndUId> friends) {
+        this.friends = friends;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -157,7 +165,7 @@ public class User implements Serializable {
     public void addPlaylist(Playlist playlist) {
         playlists.add(playlist);
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("Users").child(this.uId).child("Playlists").setValue(playlists);
+        mDatabase.child("Users").child(this.uId).child("playlists").setValue(playlists);
     }
 
     public void addSongsToPlaylist(String songName, String playlistNumber) {
@@ -185,7 +193,7 @@ public class User implements Serializable {
         if(!no) {
             friends.add(new UsernameAndUId(user.uId, user.username));
             DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-            mDatabase.child("Users").child(this.uId).child("Friends").setValue(friends);
+            mDatabase.child("Users").child(this.uId).child("friends").setValue(friends);
         }
     }
 }
