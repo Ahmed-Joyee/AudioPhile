@@ -12,4 +12,5 @@
     <color name= "purple_500">#12345678</color>
     <color name= "purple_700">#12345678</color>
     <color name= "purple_200">#12345678</color>
+    <color name="edittextColor">#DDDDDD</color>
 </resources>

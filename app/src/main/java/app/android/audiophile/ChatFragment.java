@@ -99,25 +99,26 @@ public class ChatFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
-    @Override
+   @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
         binding = FragmentChatBinding.bind(view);
+
         Util util = new Util();
         myUId = util.getUId();
         binding.chatRV.setLayoutManager(new LinearLayoutManager(view.getContext()));
         populate();
         adapter = new FriendsListApapter(names, view.getContext());
         binding.chatRV.setAdapter(adapter);
-        setHasOptionsMenu(true);
+
         return binding.getRoot();
     }
 
@@ -129,6 +130,7 @@ public class ChatFragment extends Fragment {
         searchView = (SearchView)search.getActionView();
         searchView.setSubmitButtonEnabled(true);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
@@ -165,7 +167,9 @@ public class ChatFragment extends Fragment {
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()){
                     UsernameAndUId usernameAndUId = dataSnapshot.getValue(UsernameAndUId.class);
                     names.add(usernameAndUId);
+
                 }
+                adapter.filterList(names);
                 Log.d("asd", new Integer(names.size()).toString());
             }
 

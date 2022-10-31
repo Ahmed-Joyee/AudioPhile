@@ -105,7 +105,9 @@ public class SearchFriends extends AppCompatActivity{
                         String uId = "uId";
                         UsernameAndUId usernameAndUId= new UsernameAndUId( (String) mp.get(uId), (String) mp.get(username));
                         names.add(usernameAndUId);
+
                     }
+                    adapter.filterList(names);
                 }else{
                     Log.d("SearchFriends", task.getException().getMessage());
                 }
