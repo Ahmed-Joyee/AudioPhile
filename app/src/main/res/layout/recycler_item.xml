@@ -26,11 +26,11 @@
         android:layout_toEndOf="@id/icon_view"
         android:ellipsize="end"
         android:fontFamily="@font/madrigal"
-        android:textStyle="bold"
         android:maxLines="1"
         android:padding="10dp"
         android:textColor="@color/black"
         android:textSize="16sp"
+        android:textStyle="bold"
         tools:text="Music" />
 
 </RelativeLayout>

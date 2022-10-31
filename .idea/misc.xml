@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AudioPhile/app/src/main/res/drawable/ic_delete.xml" value="0.199" />
         <entry key="..\:/AudioPhile/app/src/main/res/layout/activity_acc_email.xml" value="0.25416666666666665" />
         <entry key="..\:/AudioPhile/app/src/main/res/layout/activity_bottom_nav.xml" value="0.1" />
         <entry key="..\:/AudioPhile/app/src/main/res/layout/activity_forgot_pass.xml" value="0.25416666666666665" />
