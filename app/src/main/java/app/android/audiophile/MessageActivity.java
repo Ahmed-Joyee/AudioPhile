@@ -1,6 +1,7 @@
 package app.android.audiophile;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -31,6 +32,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -60,6 +62,7 @@ public class MessageActivity extends AppCompatActivity {
     private FirebaseRecyclerAdapter<MessageModel, ViewHolder> firebaseRecyclerAdapter;
     private AudioRecorder audioRecorder;
     private File recordFile;
+    private Uri audioFile;
 
     private MediaRecorder mediaRecorder;
     @Override
@@ -93,7 +96,6 @@ public class MessageActivity extends AppCompatActivity {
         if(chatUId==null){
             checkchat(hisUId);
         }
-
         binding.msgText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -116,10 +118,8 @@ public class MessageActivity extends AppCompatActivity {
 
             }
         });
-
         inItView();
     }
-
     private void set(){
         binding.toolbar.recipientUsername.setText(hisUsername);
         Log.d("MessageActivity", binding.toolbar.recipientUsername.getText().toString());
@@ -181,7 +181,6 @@ public class MessageActivity extends AppCompatActivity {
     private void readMessages(String chatUId){
         Query query = FirebaseDatabase.getInstance().getReference("Users").child("chat").child(chatUId);
         FirebaseRecyclerOptions<MessageModel> options = new FirebaseRecyclerOptions.Builder<MessageModel>().setQuery(query, MessageModel.class).build();
-
         firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<MessageModel, ViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull MessageModel model) {
@@ -194,8 +193,6 @@ public class MessageActivity extends AppCompatActivity {
                     holder.voicePlayerView.setAudio(model.message);
                 }
             }
-
-
             @NonNull
             @Override
             public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -216,7 +213,6 @@ public class MessageActivity extends AppCompatActivity {
                 }
                 return new ViewHolder(viewDataBinding);
             }
-
             @Override
             public int getItemViewType(int position) {
                 MessageModel messageModel = getItem(position);
@@ -234,7 +230,6 @@ public class MessageActivity extends AppCompatActivity {
         binding.recyclerViewMessage.setAdapter(firebaseRecyclerAdapter);
         firebaseRecyclerAdapter.startListening();
     }
-
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         private ViewDataBinding viewDataBinding;
@@ -260,13 +255,13 @@ public class MessageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(isRecordingOk(MessageActivity.this)){
+                    Log.d("MessageActivity", "true");
                     binding.recordButton.setListenForRecord(true);
                 }else{
                     requestRecording(MessageActivity.this);
                 }
             }
         });
-
         binding.recordView.setOnRecordListener(new OnRecordListener() {
             @Override
             public void onStart() {
@@ -274,15 +269,17 @@ public class MessageActivity extends AppCompatActivity {
                 Log.d("RecordView", "onStart");
 
                 recordFile = new File(getFilesDir(), UUID.randomUUID().toString() + ".3gp");
-                try {
-                    audioRecorder.start(recordFile.getPath());
-                } catch (IOException e) {
-                    e.printStackTrace();
+                audioFile = Uri.fromFile(recordFile);
+                if(recordFile!= null) {
+                    try {
+                        audioRecorder.start(recordFile.getPath());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 binding.recordView.setVisibility(View.VISIBLE);
                 binding.messageLayout.setVisibility(View.GONE);
             }
-
             @Override
             public void onCancel() {
                 //On Swipe To Cancel
@@ -308,10 +305,11 @@ public class MessageActivity extends AppCompatActivity {
                 //limitReached to determine if the Record was finished when time limit reached.
                 stopRecording(false);
                 String time = getHumanTimeText(recordTime);
-                Log.d("RecordView", "onFinish");
+                Log.d("RecordView", time);
 
                 binding.recordView.setVisibility(View.GONE);
                 binding.messageLayout.setVisibility(View.VISIBLE);
+
                 sendRecordingMessage();
 
                 Log.d("RecordTime", time);
@@ -321,7 +319,6 @@ public class MessageActivity extends AppCompatActivity {
             public void onLessThanSecond() {
                 //When the record time is less than One Second
                 Log.d("RecordView", "onLessThanSecond");
-
                 stopRecording(true);
                 binding.recordView.setVisibility(View.GONE);
                 binding.messageLayout.setVisibility(View.VISIBLE);
@@ -356,22 +353,24 @@ public class MessageActivity extends AppCompatActivity {
             ChatListModel chatListModel1 = new ChatListModel(chatUId, util.currentData(), "A", myUId);
             databaseReference.child(chatUId).setValue(chatListModel1);
         }
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference(chatUId + "Media/Recording"+util.getUId() + "/" + System.currentTimeMillis());
-        Uri audioFile = Uri.fromFile(recordFile);
-        storageRef.putFile(audioFile).addOnSuccessListener(success ->{
-            Task<Uri> audioUrl = success.getStorage().getDownloadUrl();
-            audioUrl.addOnCompleteListener(path ->{
-               if(path.isSuccessful()){
-                   String url = path.getResult().toString();
-                   DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users").child("chat").child(chatUId);
-                   MessageModel messageModel = new MessageModel(myUId,hisUId,url, util.currentData(),"recording", hisUsername);
-                   databaseReference.push().setValue(messageModel);
-               }
+        if(audioFile!= null) {
+            StorageReference storageRef = FirebaseStorage.getInstance().getReference(chatUId + "Media/Recording" + util.getUId() + "/" + System.currentTimeMillis());
+            storageRef.putFile(audioFile).addOnSuccessListener(success -> {
+                Task<Uri> audioUrl = success.getStorage().getDownloadUrl();
+                audioUrl.addOnCompleteListener(path -> {
+                    if (path.isSuccessful()) {
+                        String url = path.getResult().toString();
+                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users").child("chat").child(chatUId);
+                        MessageModel messageModel = new MessageModel(myUId, hisUId, url, util.currentData(), "recording", hisUsername);
+                        databaseReference.push().setValue(messageModel);
+                    }
+                });
             });
-        });
+        }
     }
 
     private void stopRecording(boolean deleteFile) {
+
         audioRecorder.stop();
         if (recordFile != null && deleteFile) {
             recordFile.delete();
