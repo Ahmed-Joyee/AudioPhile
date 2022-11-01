@@ -15,8 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -97,19 +99,32 @@ public class ProfileFragment extends Fragment {
         rv.setNestedScrollingEnabled(true);
         rv.setAdapter(pp);
 
-
-        FirebaseDatabase.getInstance().getReference().child("Users").child("posts").orderByChild("postedAt").addValueEventListener(new ValueEventListener() {
+        DatabaseReference databaseReference  = FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("friends");
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                dashboardList.clear();
-                for(DataSnapshot dataSnapshot: snapshot.getChildren())
-                {
-                    Post post=dataSnapshot.getValue(Post.class);
-                    post.setPostID(dataSnapshot.getKey());
-                    dashboardList.add(post);
+                for(DataSnapshot data : snapshot.getChildren()){
+                    UsernameAndUId usernameAndUId = data.getValue(UsernameAndUId.class);
+                    FirebaseDatabase.getInstance().getReference().child("Users").child("posts").orderByChild("postedAt").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            dashboardList.clear();
+                            for(DataSnapshot dataSnapshot: snapshot.getChildren())
+                            {
+                                Post post=dataSnapshot.getValue(Post.class);
+                                post.setPostID(dataSnapshot.getKey());
+                                dashboardList.add(post);
+                            }
+                            Collections.reverse(dashboardList);
+                            pp.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
                 }
-                Collections.reverse(dashboardList);
-                pp.notifyDataSetChanged();
             }
 
             @Override
@@ -117,6 +132,7 @@ public class ProfileFragment extends Fragment {
 
             }
         });
+
 
         addpost.setOnClickListener(new View.OnClickListener() {
             @Override
