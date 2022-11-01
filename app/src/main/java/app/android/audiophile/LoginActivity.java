@@ -113,29 +113,31 @@ public class LoginActivity extends AppCompatActivity {
                                     databaseReference.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                         @Override
                                         public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                            User user = task.getResult().getValue(User.class);
-                                            if (user.isEmailVerified() || user.isPhoneVerified()) {
-                                                FirebaseUser fuser = FirebaseAuth.getInstance().getCurrentUser();
-                                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-                                                ref.child("Users").child(fuser.getUid()).child("password").setValue(password);
+                                            if(task.isSuccessful()){
+                                                User user = task.getResult().getValue(User.class);
+                                                if (user.isEmailVerified() || user.isPhoneVerified()) {
+                                                    FirebaseUser fuser = FirebaseAuth.getInstance().getCurrentUser();
+                                                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                                                    ref.child("Users").child(fuser.getUid()).child("password").setValue(password);
 
 
-                                                Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
 
-                                                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                                                Bundle bundle = new Bundle();
-                                                ref.child("Users").child(fuser.getUid()).child("username").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                                        if (task.isSuccessful()) {
-                                                            String userUid = (String) task.getResult().getValue();
-                                                            bundle.putString("userUid", fAuth.getCurrentUser().getUid());
-                                                            bundle.putString("username", userUid);
-                                                            intent.putExtras(bundle);
-                                                            startActivity(intent);
+                                                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                                    Bundle bundle = new Bundle();
+                                                    ref.child("Users").child(fuser.getUid()).child("username").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                                            if (task.isSuccessful()) {
+                                                                String userUid = (String) task.getResult().getValue();
+                                                                bundle.putString("userUid", fAuth.getCurrentUser().getUid());
+                                                                bundle.putString("username", userUid);
+                                                                intent.putExtras(bundle);
+                                                                startActivity(intent);
+                                                            }
                                                         }
-                                                    }
-                                                });
+                                                    });
+                                                }
                                             } else {
                                                 Toast.makeText(LoginActivity.this, "Please Verify Your Email", Toast.LENGTH_SHORT).show();
                                             }

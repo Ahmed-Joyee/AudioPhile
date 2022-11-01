@@ -94,7 +94,7 @@ public class ProfileFragment extends Fragment {
         LinearLayoutManager linearLayoutManager =new LinearLayoutManager(getContext());
         rv.setLayoutManager(linearLayoutManager);
         rv.addItemDecoration(new DividerItemDecoration(rv.getContext(),DividerItemDecoration.VERTICAL));
-        rv.setNestedScrollingEnabled(false);
+        rv.setNestedScrollingEnabled(true);
         rv.setAdapter(pp);
 
 

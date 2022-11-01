@@ -1,6 +1,7 @@
 package app.android.audiophile;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -63,9 +66,63 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewholder>{
         });
 
         //line 89 from Qmark
+        Log.d("PostAdapter", model.getPostID());
+        Log.d("PostAdapter", model.getPostDescription());
+        FirebaseDatabase.getInstance().getReference().child("Users").child("posts").child(model.getPostID()).child("likes")
+                .child(FirebaseAuth.getInstance().getUid()).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            holder.binding.like.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_heartsvgrepo, 0, 0, 0);
+                            holder.binding.like.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    FirebaseDatabase.getInstance().getReference().child("Users").child("posts").child(model.getPostID()).child("likes").child(FirebaseAuth.getInstance().getUid())
+                                            .removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void unused) {
+                                                    FirebaseDatabase.getInstance().getReference().child("Users").child("posts").child(model.getPostID())
+                                                            .child("postLike").setValue(model.getPostLike() - 1).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                @Override
+                                                                public void onSuccess(Void unused) {
+                                                                    holder.binding.like.setCompoundDrawablesWithIntrinsicBounds(R.drawable.heart_24, 0, 0, 0);
+                                                                }
+                                                            });
+                                                }
+                                            });
+                                }
+                            });
 
+                        } else {
+                            holder.binding.like.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    FirebaseDatabase.getInstance().getReference().child("Users").child("posts").child(model.getPostID()).child("likes").child(FirebaseAuth.getInstance().getUid())
+                                            .setValue(true).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void unused) {
+                                                    FirebaseDatabase.getInstance().getReference().child("Users").child("posts").child(model.getPostID())
+                                                            .child("postLike").setValue(model.getPostLike() + 1)
+                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                @Override
+                                                                public void onSuccess(Void unused) {
+                                                                    holder.binding.like.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_heartsvgrepo, 0, 0, 0);
 
+                                                                    //notification
+                                                                }
+                                                            });
+                                                }
+                                            });
+                                }
+                            });
+                        }
+                    }
 
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
     }
 
     @Override
