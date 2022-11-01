@@ -1,12 +1,27 @@
 package app.android.audiophile;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +42,12 @@ public class ProfileFragment extends Fragment {
     public ProfileFragment() {
         // Required empty public constructor
     }
+
+
+    RecyclerView rv;
+    ArrayList<Post> dashboardList;
+    ImageView img;
+    ImageView addpost;
 
     /**
      * Use this factory method to create a new instance of
@@ -58,7 +79,53 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        addpost=getView().findViewById(R.id.addpost);
+        rv=getView().findViewById(R.id.rv);
+        img=getView().findViewById(R.id.profile);
+
+        dashboardList=new ArrayList<>();
+        PostAdapter pp=new PostAdapter(dashboardList,getContext());
+        LinearLayoutManager linearLayoutManager =new LinearLayoutManager(getContext());
+        rv.setLayoutManager(linearLayoutManager);
+        rv.addItemDecoration(new DividerItemDecoration(rv.getContext(),DividerItemDecoration.VERTICAL));
+        rv.setNestedScrollingEnabled(false);
+        rv.setAdapter(pp);
+
+
+        FirebaseDatabase.getInstance().getReference().child("Users").child("posts").orderByChild("postedAt").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                dashboardList.clear();
+                for(DataSnapshot dataSnapshot: snapshot.getChildren())
+                {
+                    Post post=dataSnapshot.getValue(Post.class);
+                    post.setPostID(dataSnapshot.getKey());
+                    dashboardList.add(post);
+                }
+                Collections.reverse(dashboardList);
+                pp.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        addpost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getActivity(),AddPostActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
     }
 }

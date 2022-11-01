@@ -59,5 +59,7 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-database:8.0.2'
     implementation 'com.android.support:multidex:2.0.1'
     implementation 'com.github.JagarYousef:ChatVoicePlayer:1.1.0'
+    implementation 'com.github.MrNouri:DynamicSizes:1.0'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 //    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.4.0'
 }

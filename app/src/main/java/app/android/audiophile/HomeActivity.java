@@ -26,6 +26,7 @@ public class HomeActivity extends AppCompatActivity {
         chipNavigationBar.setItemSelected(R.id.chat, true);
         fragment = new ChatFragment();
         fragment.setArguments(bundle);
+        getSupportActionBar().hide();
         getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
 
         chipNavigationBar.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
