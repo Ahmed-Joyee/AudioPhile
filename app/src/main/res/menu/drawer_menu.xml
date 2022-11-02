@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:iconTint="@color/white"
+        android:id="@+id/local_store"
+        android:title="Local Storage"
+        android:icon="@drawable/ic_store"/>
+
+    <item
+        android:iconTint="@color/white"
+        android:id="@+id/myplaylists"
+        android:title="My Playlists"
+        android:icon="@drawable/ic_playlist"/>
+
+    <group
+        android:checkableBehavior="single">
+        <item
+            android:iconTint="@color/black"
+            android:id="@+id/people"
+            android:title="People">
+
+            <menu>
+
+                <item
+                    android:iconTint="@color/white"
+                    android:id="@+id/nav_userlist"
+                    android:title="List of Users"
+                    android:icon="@drawable/ic_person"/>
+
+                <item
+                    android:iconTint="@color/white"
+                    android:id="@+id/nav_friends"
+                    android:title="Friends"
+                    android:icon="@drawable/ic_person"/>
+
+                <item
+                    android:iconTint="@color/white"
+                    android:id="@+id/nav_chat"
+                    android:title="Chat"
+                    android:icon="@drawable/ic_chat"/>
+            </menu>
+
+        </item>
+    </group>
+
+    <group
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_prof"
+            android:title="User">
+
+            <menu>
+                <item
+                    android:id="@+id/nav_user_profile"
+                    android:title="Profile"
+                    android:icon="@drawable/ic_person"
+                    android:iconTint="@color/white"/>
+
+                <item
+                    android:id="@+id/sign_out"
+                    android:icon="@drawable/ic_signout"
+                    android:iconTint="@color/white"
+                    android:title="Sign Out"/>
+
+            </menu>
+        </item>
+    </group>
+
+    <group
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/about_us"
+            android:title="About Us">
+
+            <menu>
+
+                <item
+                    android:id="@+id/who_are_we_btn"
+                    android:icon="@drawable/ic_us"
+                    android:iconTint="@color/white"
+                    android:title="Meet the Devs"/>
+
+                <item
+                    android:id="@+id/contact_btn"
+                    android:icon="@drawable/ic_contact"
+                    android:iconTint="@color/white"
+                    android:title="Contact Us"/>
+
+            </menu>
+
+        </item>
+
+    </group>
+</menu>
