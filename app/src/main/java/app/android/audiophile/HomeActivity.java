@@ -29,32 +29,29 @@ public class HomeActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
 
-        chipNavigationBar.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(int i) {
-                switch (i){
-                    case R.id.chat:
-                        fragment = new ChatFragment();
-                        if(MyMediaPlayer.getInstance().isPlaying())MyMediaPlayer.getInstance().stop();
-                        break;
-                    case R.id.profile:
-                        fragment = new ProfileFragment();
-                        if(MyMediaPlayer.getInstance().isPlaying())MyMediaPlayer.getInstance().stop();
-                        break;
-                    case R.id.local:
-                        fragment = new LocalSongsFragment();
-                        if(!MyMediaPlayer.getInstance().isPlaying())MyMediaPlayer.getInstance().reset();
-                        break;
-                    case R.id.friend:
-                        fragment = new SearchFriendsFragment();
-                        if(MyMediaPlayer.getInstance().isPlaying())MyMediaPlayer.getInstance().stop();
-                        break;
-                }
+        chipNavigationBar.setOnItemSelectedListener(i -> {
+            switch (i){
+                case R.id.chat:
+                    fragment = new ChatFragment();
+                    if(MyMediaPlayer.getInstance().isPlaying())MyMediaPlayer.getInstance().stop();
+                    break;
+                case R.id.profile:
+                    fragment = new ProfileFragment();
+                    if(MyMediaPlayer.getInstance().isPlaying())MyMediaPlayer.getInstance().stop();
+                    break;
+                case R.id.local:
+                    fragment = new LocalSongsFragment();
+                    if(!MyMediaPlayer.getInstance().isPlaying())MyMediaPlayer.getInstance().reset();
+                    break;
+                case R.id.friend:
+                    fragment = new SearchFriendsFragment();
+                    if(MyMediaPlayer.getInstance().isPlaying())MyMediaPlayer.getInstance().stop();
+                    break;
+            }
 
-                if(fragment != null){
-                    fragment.setArguments(bundle);
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
-                }
+            if(fragment != null){
+                fragment.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
             }
         });
     }
