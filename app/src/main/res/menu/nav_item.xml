@@ -7,7 +7,7 @@
         app:cnb_backgroundColor="@color/colorPrimary"
         app:cnb_iconColor="#ffffff"
         app:cnb_textColor="#ffffff"
-        android:title="Profile"/>
+        android:title="Newsfeed"/>
 
     <item
         android:id="@+id/local"
@@ -15,7 +15,7 @@
         app:cnb_backgroundColor="@color/colorPrimary"
         app:cnb_iconColor="#ffffff"
         app:cnb_textColor="#ffffff"
-        android:title="Local"/>
+        android:title="Explore"/>
 
     <item
         android:id="@+id/chat"
@@ -23,7 +23,7 @@
         app:cnb_backgroundColor="@color/colorPrimary"
         app:cnb_iconColor="#ffffff"
         app:cnb_textColor="#ffffff"
-        android:title="Chat"/>
+        android:title="Search"/>
 
     <item
         android:id="@+id/friend"
@@ -31,6 +31,6 @@
         app:cnb_backgroundColor="@color/colorPrimary"
         app:cnb_iconColor="#ffffff"
         app:cnb_textColor="#ffffff"
-        android:title="Search Friend"/>
+        android:title="Notifications"/>
 
 </menu>
