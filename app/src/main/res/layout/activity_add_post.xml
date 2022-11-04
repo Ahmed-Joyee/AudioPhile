@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="@color/colorPrimary"
     tools:context=".AddPostActivity">
 
     <!-- TODO: Update blank fragment layout -->
@@ -34,7 +34,7 @@
         android:enabled="false"
         android:fontFamily="sans-serif-black"
         android:text="Post"
-        android:textColor="@color/gray"
+        android:textColor="@color/light_pink"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

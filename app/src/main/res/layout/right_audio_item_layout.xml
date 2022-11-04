@@ -10,7 +10,7 @@
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white">
+        android:background="@color/light_pink">
 
         <me.jagar.chatvoiceplayerlibrary.VoicePlayerView
             android:id="@+id/voicePlayerView"

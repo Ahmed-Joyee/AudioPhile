@@ -29,7 +29,7 @@
             android:textStyle="bold"
             android:text="@string/make_selection"
             android:textAllCaps="true"
-            android:textColor="@color/white"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="35sp" />
 
 
@@ -40,7 +40,7 @@
             android:layout_marginTop="10dp"
             android:fontFamily="@font/muli_regular"
             android:text="@string/make_selection_detail"
-            android:textColor="@color/white"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="16sp" />
 
 
@@ -49,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="180dp"
             android:layout_marginTop="50dp"
-            android:background="@color/light_grey"
+            android:background="@color/white"
             android:padding="10dp">
 
 
@@ -89,6 +89,10 @@
                 android:id="@+id/resetUsingMobile"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="10dp"
                 android:background="#FF000000" />
 
 
@@ -100,7 +104,7 @@
             android:layout_width="match_parent"
             android:layout_height="180dp"
             android:layout_marginTop="20dp"
-            android:background="@color/light_grey"
+            android:background="@color/white"
             android:padding="10dp">
 
 
@@ -140,7 +144,7 @@
                 android:id="@+id/resetUsingEmail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/light_grey" />
+                android:background="@color/mauve" />
 
 
         </RelativeLayout>

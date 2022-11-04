@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -45,10 +46,10 @@ public class SearchFriends extends AppCompatActivity{
         super.onCreate(savedInstanceState);
 
         bundle = getIntent().getExtras();
-
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         binding = ActivitySearchFriendsBinding.inflate(getLayoutInflater());
         setContentView(R.layout.activity_search_friends);
-        rec = findViewById(R.id.topBarLstView);
+        rec = findViewById(R.id.recycler_user);
 
         Log.d(TAG, (String) bundle.getString("username"));
         buildRecyclerView();

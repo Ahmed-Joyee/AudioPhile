@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:openDrawer="start"
-    android:background="@color/white"
+    android:background="@color/light_pink"
     android:id="@+id/prof_drawer"
     tools:context=".HomeActivity">
 
@@ -32,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:overScrollMode="always"
-        android:background="@color/white"
+        android:background="@color/light_pink"
         app:menu="@menu/user_menu"
         app:headerLayout="@layout/menu_header"
         android:layout_gravity="start"/>

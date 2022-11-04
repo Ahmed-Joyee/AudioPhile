@@ -46,7 +46,7 @@
             android:text="@string/forgot_password"
             android:textAlignment="center"
             android:textAllCaps="false"
-            android:textColor="@color/white"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="36sp" />
 
         <TextView
@@ -58,7 +58,7 @@
             android:gravity="center"
             android:text="@string/forget_password_detail"
             android:textAlignment="center"
-            android:textColor="@color/white"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="18sp" />
 
 
@@ -74,15 +74,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:hint="@string/email"
-                android:textColorHint="@color/black"
+                android:textColorHint="@color/colorPrimaryDark"
                 app:boxBackgroundColor="@color/colorPrimary"
-                app:boxStrokeColor="@color/colorAccent"
+                app:boxStrokeColor="@color/colorPrimaryDark"
                 app:boxStrokeWidthFocused="2dp"
                 app:endIconMode="clear_text"
-                app:endIconTint="@color/black"
-                app:hintTextColor="@color/black"
+                app:endIconTint="@color/colorAccent"
+                app:hintTextColor="@color/colorAccent"
                 app:startIconDrawable="@drawable/email"
-                app:startIconTint="@color/white">
+                app:startIconTint="@color/colorPrimaryDark">
 
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -91,7 +91,8 @@
                     android:layout_height="match_parent"
                     android:fontFamily="@font/muli_regular"
                     android:inputType="textEmailAddress"
-                    android:textColor="@color/black"
+                    android:textColor="@color/colorAccent"
+                    android:background="@color/colorPrimary"
                     android:textCursorDrawable="@null" />
 
 
@@ -108,7 +109,7 @@
                 android:backgroundTint="@color/colorAccent"
 
                 android:text="@string/next_btn"
-                android:textColor="@color/white" />
+                android:textColor="@color/light_pink" />
 
 
         </RelativeLayout>

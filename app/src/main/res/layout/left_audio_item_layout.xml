@@ -21,7 +21,7 @@
             app:playPauseBackgroundColor="@color/colorAccent"
             app:playPauseCornerRadius="100"
             app:playProgressbarColor="@color/colorAccent"
-            app:progressTimeColor="@color/white"
+            app:progressTimeColor="@color/colorPrimaryDark"
             app:seekBarProgressColor="#000"
             app:seekBarThumbColor="@color/colorAccent"
             app:showShareButton="false"

@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
-            android:textColor="@color/white"
+            android:textColor="@color/light_pink"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:text=""
             android:textAllCaps="true"
-            android:textColor="@color/white"
+            android:textColor="@color/light_pink"
             android:textSize="18sp"
             android:textStyle="italic" />
 

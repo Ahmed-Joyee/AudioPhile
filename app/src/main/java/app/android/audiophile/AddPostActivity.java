@@ -10,6 +10,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,9 +24,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Date;
-import java.util.UUID;
-
 public class AddPostActivity extends AppCompatActivity {
 
     private FirebaseAuth fAuth;
@@ -37,6 +35,7 @@ public class AddPostActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_post);
         fAuth = FirebaseAuth.getInstance();
         ProgressDialog dialog=new ProgressDialog(this);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         Button addPostBtn=findViewById(R.id.addpost_btn);
         TextView puniv=findViewById(R.id.puniv);
@@ -70,7 +69,7 @@ public class AddPostActivity extends AppCompatActivity {
                 if(!description.isEmpty())
                 {
                     addPostBtn.setBackgroundDrawable(ContextCompat.getDrawable(getApplication(),R.drawable.left_side_background));
-                    addPostBtn.setTextColor(getApplication().getResources().getColor(R.color.white));
+                    addPostBtn.setTextColor(getApplication().getResources().getColor(R.color.light_pink));
                     addPostBtn.setEnabled(true);
                     imgselect.setVisibility(View.VISIBLE);
                 }

@@ -170,7 +170,7 @@ public class SettingsFragment extends Fragment {
                     username.setError("Username field cannot be empty");
                 }
                 else if (!user.matches(noWhiteSpace)) {
-                    username.setError("Remove white spaces, length (4-15)");
+                    username.setError("Remove light_pink spaces, length (4-15)");
                 }
                 else if(pname.equals(na) && user.equals(us))
                 {
