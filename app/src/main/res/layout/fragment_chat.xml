@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/parent_layout"
-    android:layout_marginTop="80dp"
     android:background="@color/light_pink"
     tools:context=".ChatFragment">
 
@@ -14,6 +13,7 @@
         android:layout_height="wrap_content"
         android:padding="5dp"
         android:layout_marginLeft="5dp"
+        android:layout_margin="20dp"
         android:id="@+id/chatRV"/>
 
 </RelativeLayout>

@@ -3,6 +3,7 @@ package app.android.audiophile;
 import static android.content.ContentValues.TAG;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -12,6 +13,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -22,6 +25,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,30 +37,40 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
+import java.util.Locale;
+
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private ChipNavigationBar chipNavigationBar;
     private DrawerLayout drawerLayout;
     private Fragment fragment = null;
     TextView nav_user_name, nav_name;
-
+    Bundle bundle;
     Animation aniFade, aniFade2;
 
     DatabaseReference reference;
     Query checkUser;
     private String name, em, username, ph, pass, uid;
     private NavigationView navigationView;
+    ActionBar actionBar;
+
+    AppBarLayout appBarLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle bundle = getIntent().getExtras();
+        setContentView(R.layout.activity_home);
+        bundle = getIntent().getExtras();
         fragment = new FeedFragment();
         fragment.setArguments(bundle);
-        setContentView(R.layout.activity_home);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        getSupportActionBar().hide();
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+//        getSupportActionBar().hide();
+        actionBar = getSupportActionBar();
+        actionBar.hide();
+        ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#FAEDF0"));
+        actionBar.setBackgroundDrawable(colorDrawable);
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigation_view);
@@ -66,29 +80,31 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         nav_name = (TextView) headerView.findViewById(R.id.nav_header_name);
 
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        reference = FirebaseDatabase.getInstance().getReference("users");
-        checkUser = reference.orderByChild("id").equalTo(uid);
+        reference = FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
+//        checkUser = reference.orderByChild("id").equalTo(uid);
 
         aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_in);
         aniFade2 = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_out);
-
+        appBarLayout = findViewById(R.id.appBarLayout);
         loadFragment(new FeedFragment());
         Menu menu = navigationView.getMenu();
         MenuItem item1 = menu.getItem(3);
         View menuIcon = findViewById(R.id.menu_icon);
         item1.setChecked(true);
 
-        checkUser.addListenerForSingleValueEvent(new ValueEventListener() {
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
-                    username = snapshot.child(uid).child("username").getValue(String.class);
-                    name = snapshot.child(uid).child("name").getValue(String.class);
-                    em = snapshot.child(uid).child("email").getValue(String.class);
-                    ph = snapshot.child(uid).child("phone").getValue(String.class);
-                    pass = snapshot.child(uid).child("password").getValue(String.class);
+                    User user = snapshot.getValue(User.class);
+                    username = user.getUsername();
+                    em = user.getEmail();
+                    ph = user.getMobile();
+                    pass = user.getPassword();
+                    username.toUpperCase();
+                    em.toLowerCase();
                     nav_user_name.setText(username );
-                    nav_name.setText(name);
+                    nav_name.setText(em);
                     Log.i(TAG, "onDataChange: " + username);
                 }
                 else{
@@ -191,23 +207,38 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 }
                 else
                 {
+                    Fragment fragment;
                     switch (id) {
                         case R.id.feed:
+                            actionBar.hide();
+                            appBarLayout.setVisibility(View.VISIBLE);
                             navigationView.setCheckedItem(R.id.feed);
+                            if(MyMediaPlayer.getInstance().isPlaying())MyMediaPlayer.getInstance().stop();
+                            fragment = new FeedFragment();
+                            fragment.setArguments(bundle);
                             getSupportFragmentManager().beginTransaction().replace(R.id.frag_container,
-                                    new FeedFragment()).addToBackStack(null).commit();
+                                    fragment).addToBackStack(null).commit();
                             break;
 
                         case R.id.explore:
+                            actionBar.hide();
+                            appBarLayout.setVisibility(View.VISIBLE);
                             navigationView.setCheckedItem(R.id.explore);
+                            fragment = new ExploreFragment();
+                            fragment.setArguments(bundle);
+                            if(MyMediaPlayer.getInstance().isPlaying())MyMediaPlayer.getInstance().stop();
                             getSupportFragmentManager().beginTransaction().replace(R.id.frag_container,
-                                    new ExploreFragment()).addToBackStack(null).commit();
+                                    fragment).addToBackStack(null).commit();
                             break;
 
                         case R.id.local:
+                            actionBar.hide();
+                            appBarLayout.setVisibility(View.VISIBLE);
+                            fragment = new LocalSongsFragment();
+                            fragment.setArguments(bundle);
                             navigationView.setCheckedItem(R.id.local);
                             getSupportFragmentManager().beginTransaction().replace(R.id.frag_container,
-                                    new LocalSongsFragment()).addToBackStack(null).commit();
+                                    fragment).addToBackStack(null).commit();
                             break;
 
 //                        case R.id.myplaylists:
@@ -216,46 +247,80 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 //                            break;
 
                         case R.id.nav_userlist:
+                            actionBar.show();
+                            appBarLayout.setVisibility(View.GONE);
+                            fragment = new SearchFriendsFragment();
+                            fragment.setArguments(bundle);
+                            if(MyMediaPlayer.getInstance().isPlaying())MyMediaPlayer.getInstance().stop();
                             navigationView.setCheckedItem(R.id.nav_userlist);
                             getSupportFragmentManager().beginTransaction().replace(R.id.frag_container,
-                                    new SearchFriendsFragment()).addToBackStack(null).commit();
+                                    fragment).addToBackStack(null).commit();
                             break;
 
-//                        case R.id.nav_friends:
-//                            navigationView.setCheckedItem(R.id.nav_friends);
-//                            loadFragment(new FriendsFragment());
-//                            break;
+                        case R.id.nav_friends:
+                            actionBar.hide();
+                            appBarLayout.setVisibility(View.VISIBLE);
+                            fragment = new FriendFragment();
+                            fragment.setArguments(bundle);
+                            if(MyMediaPlayer.getInstance().isPlaying())MyMediaPlayer.getInstance().stop();
+                            navigationView.setCheckedItem(R.id.nav_userlist);
+                            getSupportFragmentManager().beginTransaction().replace(R.id.frag_container,
+                                    fragment).addToBackStack(null).commit();
+                            break;
 
                         case R.id.contact_btn:
+                            actionBar.hide();
+                            appBarLayout.setVisibility(View.VISIBLE);
+                            fragment = new ContactUsFragment();
+                            fragment.setArguments(bundle);
+                            if(MyMediaPlayer.getInstance().isPlaying())MyMediaPlayer.getInstance().stop();
                             navigationView.setCheckedItem(R.id.contact_btn);
                             getSupportFragmentManager().beginTransaction().replace(R.id.frag_container,
-                                    new ContactUsFragment()).addToBackStack(null).commit();
+                                    fragment).addToBackStack(null).commit();
                             break;
 
 
                         case R.id.nav_chat:
+                            actionBar.show();
+                            appBarLayout.setVisibility(View.GONE);
+                            fragment = new ChatFragment();
+                            fragment.setArguments(bundle);
+                            if(MyMediaPlayer.getInstance().isPlaying())MyMediaPlayer.getInstance().stop();
                             navigationView.setCheckedItem(R.id.nav_chat);
                             getSupportFragmentManager().beginTransaction().replace(R.id.frag_container,
-                                    new ChatFragment()).addToBackStack(null).commit();
+                                   fragment).addToBackStack(null).commit();
                             break;
 
 
                         case R.id.nav_user_profile:
+                            actionBar.hide();
+                            appBarLayout.setVisibility(View.VISIBLE);
+                            if(MyMediaPlayer.getInstance().isPlaying())MyMediaPlayer.getInstance().stop();
                             navigationView.setCheckedItem(R.id.nav_user_profile);
-                            startActivity(new Intent(HomeActivity.this, UserProfileActivity.class));
-                            finish();
+                            Intent intent = new Intent(HomeActivity.this, UserProfileActivity.class);
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+//                            finish();
                             break;
 
                         case R.id.sign_out:
+                            actionBar.hide();
+                            appBarLayout.setVisibility(View.VISIBLE);
+                            if(MyMediaPlayer.getInstance().isPlaying())MyMediaPlayer.getInstance().stop();
                             navigationView.setCheckedItem(R.id.sign_out);
                             FirebaseAuth.getInstance().signOut();
                             startActivity(new Intent(HomeActivity.this, LoginActivity.class));
                             break;
 
                         case R.id.meet_dev:
+                            actionBar.hide();
+                            appBarLayout.setVisibility(View.VISIBLE);
+                            fragment = new MeetDevFragment();
+                            fragment.setArguments(bundle);
+                            if(MyMediaPlayer.getInstance().isPlaying())MyMediaPlayer.getInstance().stop();
                             navigationView.setCheckedItem(R.id.meet_dev);
                             getSupportFragmentManager().beginTransaction().replace(R.id.frag_container,
-                                    new MeetDevFragment()).addToBackStack(null).commit();
+                                    fragment).addToBackStack(null).commit();
                             break;
 
                         default:

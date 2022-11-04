@@ -46,7 +46,7 @@ public class SearchFriends extends AppCompatActivity{
         super.onCreate(savedInstanceState);
 
         bundle = getIntent().getExtras();
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         binding = ActivitySearchFriendsBinding.inflate(getLayoutInflater());
         setContentView(R.layout.activity_search_friends);
         rec = findViewById(R.id.recycler_user);

@@ -3,6 +3,7 @@ package app.android.audiophile;
 import static androidx.core.content.PermissionChecker.PERMISSION_GRANTED;
 
 import android.Manifest;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -99,6 +100,7 @@ public class ChatFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setHasOptionsMenu(true);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
@@ -128,6 +130,7 @@ public class ChatFragment extends Fragment {
         MenuItem search = menu.findItem(R.id.search_top);
         SearchView searchView = new SearchView(getContext());
         searchView = (SearchView)search.getActionView();
+        searchView.setBackground(Drawable.createFromPath("@color/light_pink"));
         searchView.setSubmitButtonEnabled(true);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
