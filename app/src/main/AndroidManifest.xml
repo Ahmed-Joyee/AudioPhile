@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="app.android.audiophile">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -27,6 +29,8 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <activity android:name=".YoutubeApiCalls"
+            android:exported="false"/>
         <activity
             android:name=".YTSongActivity"
             android:exported="false">

@@ -1,15 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="80dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/light_pink"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="vertical"
     tools:context=".ExploreFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <EditText
+        android:id="@+id/searchForSongs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Search for songs"
+        android:layout_gravity="center"
+        android:textStyle="bold"
+        android:gravity="center" />
+    <Button
+        android:id="@+id/searchForSongsButton"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_marginBottom="20dp"
+        android:text="Search song"
+        android:backgroundTint="@color/colorAccent"/>
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/searchLinearLayout"
+            android:visibility="invisible"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/searchForSongsResult"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Place holder text here"
+                android:layout_gravity="center"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="You might also like (tap to reveal suggestion)"
+                android:layout_gravity="center"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_margin="20dp"
+                android:id="@+id/suggestionRV"/>
+        </LinearLayout>
+
+</LinearLayout>

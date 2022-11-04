@@ -41,7 +41,7 @@ public class WelcomeActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if(isNetworkAvailable()) {
-                    Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
+                    Intent intent = new Intent(WelcomeActivity.this, HomeActivity.class);
                     startActivity(intent);
                     finish();
                 }

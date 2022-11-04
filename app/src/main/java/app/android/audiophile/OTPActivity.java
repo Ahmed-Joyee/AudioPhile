@@ -111,7 +111,7 @@ public class OTPActivity extends AppCompatActivity {
             @Override
             public void onSuccess(DocumentReference documentReference) {
                 //success
-                Toast.makeText(OTPActivity.this,"firestore e probably add hoise", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(OTPActivity.this,"firestore e probably add hoise", Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
