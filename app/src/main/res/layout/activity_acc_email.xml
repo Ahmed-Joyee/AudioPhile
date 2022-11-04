@@ -23,14 +23,15 @@
             android:src="@drawable/general_back_icon" />
 
 
-        <ImageView
-            android:id="@+id/forget_password_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:padding="5dp"
-            android:src="@drawable/password" />
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="173dp"
+            android:layout_marginVertical="20dp"
+            android:layout_marginTop="108dp"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/forgot_pass" />
 
 
         <TextView
@@ -47,7 +48,6 @@
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="36sp" />
-
 
         <TextView
             android:id="@+id/forget_password_description"

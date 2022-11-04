@@ -9,37 +9,44 @@
     android:background="@color/colorPrimary"
     android:id="@+id/drawer_layout">
 
-<RelativeLayout
-    android:id="@+id/audiophile_coordinator"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <com.ismaeldivita.chipnavigation.ChipNavigationBar
-        android:id="@+id/chipNavigation"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinator"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:elevation="8dp"
-        android:layout_margin="20dp"
-        android:outlineAmbientShadowColor="@color/light_grey"
-        android:background="@drawable/round_corners"
-        android:backgroundTint="@color/colorAccent"
-        app:cnb_radius="8dp"
-        app:cnb_unselectedColor="@color/light_grey"
-        app:cnb_menuResource="@menu/nav_item"/>
+        android:layout_height="match_parent">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/container"
-        android:layout_above="@+id/chipNavigation" />
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <FrameLayout
-        android:id="@+id/frag_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+            <Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
 
-</RelativeLayout>
+                <ImageView
+                    android:id="@+id/menu_icon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/app_logo" />
+
+                <TextView
+                    android:id="@+id/tab_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp" />
+
+            </Toolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <FrameLayout
+            android:id="@+id/frag_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 <com.google.android.material.navigation.NavigationView
     android:id="@+id/navigation_view"

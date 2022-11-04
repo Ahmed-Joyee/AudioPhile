@@ -22,6 +22,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -32,7 +33,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private ChipNavigationBar chipNavigationBar;
     private DrawerLayout drawerLayout;
@@ -56,11 +57,6 @@ public class HomeActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         getSupportActionBar().hide();
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
-
-
-        chipNavigationBar = findViewById(R.id.chipNavigation);
-        chipNavigationBar.setItemSelected(R.id.feed, true);
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigation_view);
@@ -76,32 +72,11 @@ public class HomeActivity extends AppCompatActivity {
         aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_in);
         aniFade2 = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_out);
 
-
-        chipNavigationBar.setOnItemSelectedListener(i -> {
-            switch (i){
-                case R.id.chat:
-                    fragment = new ChatFragment();
-                    if(MyMediaPlayer.getInstance().isPlaying())MyMediaPlayer.getInstance().stop();
-                    break;
-                case R.id.feed:
-                    fragment = new FeedFragment();
-                    if(MyMediaPlayer.getInstance().isPlaying())MyMediaPlayer.getInstance().stop();
-                    break;
-//                case R.id.explore:
-//                    fragment = new ExploreFragment();
-//                    if(!MyMediaPlayer.getInstance().isPlaying())MyMediaPlayer.getInstance().reset();
-//                    break;
-                case R.id.friend:
-                    fragment = new SearchFriendsFragment();
-                    if(MyMediaPlayer.getInstance().isPlaying())MyMediaPlayer.getInstance().stop();
-                    break;
-            }
-
-            if(fragment != null){
-                fragment.setArguments(bundle);
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
-            }
-        });
+        loadFragment(new FeedFragment());
+        Menu menu = navigationView.getMenu();
+        MenuItem item1 = menu.getItem(3);
+        View menuIcon = findViewById(R.id.menu_icon);
+        item1.setChecked(true);
 
         checkUser.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -148,11 +123,25 @@ public class HomeActivity extends AppCompatActivity {
         return this.getSupportFragmentManager().findFragmentById(R.id.frag_container);
     }
 
+    private void loadFragment(Fragment fragment) {
+        if(getCurrentFragment() != fragment){
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+
+            if(getCurrentFragment()!=null)
+            {
+                fm.beginTransaction().remove(getCurrentFragment()).commit();
+            }
+
+            ft.setCustomAnimations(R.anim.fade_in,R.anim.fade_out).replace(R.id.frag_container, fragment);
+            //ft.commit();
+            ft.commitNow();
+        }
+    }
+
     private void navigationDrawer() {
-        //Navigation Drawer
         navigationView.bringToFront();
-        navigationView.setNavigationItemSelectedListener(this::onNavigationItemSelected);
-        //navigationView.setCheckedItem(R.id.nav_home);
+        navigationView.setNavigationItemSelectedListener(this);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -203,6 +192,18 @@ public class HomeActivity extends AppCompatActivity {
                 else
                 {
                     switch (id) {
+                        case R.id.feed:
+                            navigationView.setCheckedItem(R.id.feed);
+                            getSupportFragmentManager().beginTransaction().replace(R.id.frag_container,
+                                    new FeedFragment()).addToBackStack(null).commit();
+                            break;
+
+                        case R.id.explore:
+                            navigationView.setCheckedItem(R.id.explore);
+                            getSupportFragmentManager().beginTransaction().replace(R.id.frag_container,
+                                    new ExploreFragment()).addToBackStack(null).commit();
+                            break;
+
                         case R.id.local:
                             navigationView.setCheckedItem(R.id.local);
                             getSupportFragmentManager().beginTransaction().replace(R.id.frag_container,
@@ -261,7 +262,7 @@ public class HomeActivity extends AppCompatActivity {
                             break;
                     }
                     menuItem.setChecked(true);
-                    //setTitle(menuItem.getTitle());
+                    setTitle(menuItem.getTitle());
                     drawerLayout.closeDrawer(GravityCompat.START);
                     return true;
                 }
@@ -278,6 +279,7 @@ public class HomeActivity extends AppCompatActivity {
         moveTaskToBack(true);
     }
 
+    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         return false;
     }

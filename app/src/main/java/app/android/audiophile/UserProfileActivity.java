@@ -72,7 +72,7 @@ public class UserProfileActivity extends AppCompatActivity implements Navigation
 
         loadFragment(new SettingsFragment());
         Menu menu = navigationView.getMenu();
-        MenuItem item1 = menu.getItem(2);
+        MenuItem item1 = menu.getItem(1);
         item1.setChecked(true);
 
         checkUser.addListenerForSingleValueEvent(new ValueEventListener() {

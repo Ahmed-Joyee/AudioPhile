@@ -9,6 +9,12 @@
         android:icon="@drawable/ic_store"/>
 
     <item
+        android:id="@+id/explore"
+        android:icon="@drawable/ic_local"
+        android:iconTint="@color/colorPrimaryDark"
+        android:title="Explore"/>
+
+    <item
         android:iconTint="@color/colorPrimaryDark"
         android:id="@+id/myplaylists"
         android:title="My Playlists"
@@ -22,6 +28,12 @@
             android:title="People">
 
             <menu>
+
+                <item
+                    android:iconTint="@color/colorPrimaryDark"
+                    android:id="@+id/feed"
+                    android:title="Newsfeed"
+                    android:icon="@drawable/ic_friend"/>
 
                 <item
                     android:iconTint="@color/colorPrimaryDark"
