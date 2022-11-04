@@ -40,7 +40,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:fontFamily="sans-serif-black"
-                android:text="TextView"
                 android:textColor="#020202"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -54,7 +53,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="cursive"
-                android:text="textview"
                 android:textColor="#716F6F"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/proImg"
@@ -86,11 +84,10 @@
 
                 <TextView
                     android:id="@+id/postdesc"
-                    android:layout_width="388dp"
-                    android:layout_height="43dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="4dp"
-                    android:text="TextView"
                     android:textColor="#050505"
                     android:visibility="visible" />
             </LinearLayout>

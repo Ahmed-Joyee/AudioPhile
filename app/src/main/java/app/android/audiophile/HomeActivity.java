@@ -44,8 +44,6 @@ public class HomeActivity extends AppCompatActivity {
     DatabaseReference reference;
     Query checkUser;
     private String name, em, username, ph, pass, uid;
-
-    private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
 
     @Override
@@ -78,10 +76,6 @@ public class HomeActivity extends AppCompatActivity {
         aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_in);
         aniFade2 = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_out);
 
-        loadFragment(new LocalSongsFragment());
-        Menu menu = navigationView.getMenu();
-        MenuItem item1 = menu.getItem(0);
-        item1.setChecked(true);
 
         chipNavigationBar.setOnItemSelectedListener(i -> {
             switch (i){
@@ -211,7 +205,8 @@ public class HomeActivity extends AppCompatActivity {
                     switch (id) {
                         case R.id.local:
                             navigationView.setCheckedItem(R.id.local);
-                            loadFragment(new LocalSongsFragment());
+                            getSupportFragmentManager().beginTransaction().replace(R.id.frag_container,
+                                    new LocalSongsFragment()).addToBackStack(null).commit();
                             break;
 
 //                        case R.id.myplaylists:
@@ -221,7 +216,8 @@ public class HomeActivity extends AppCompatActivity {
 
                         case R.id.nav_userlist:
                             navigationView.setCheckedItem(R.id.nav_userlist);
-                            loadFragment(new SearchFriendsFragment());
+                            getSupportFragmentManager().beginTransaction().replace(R.id.frag_container,
+                                    new SearchFriendsFragment()).addToBackStack(null).commit();
                             break;
 
 //                        case R.id.nav_friends:
@@ -231,13 +227,15 @@ public class HomeActivity extends AppCompatActivity {
 
                         case R.id.contact_btn:
                             navigationView.setCheckedItem(R.id.contact_btn);
-                            loadFragment(new ContactUsFragment());
+                            getSupportFragmentManager().beginTransaction().replace(R.id.frag_container,
+                                    new ContactUsFragment()).addToBackStack(null).commit();
                             break;
 
 
                         case R.id.nav_chat:
                             navigationView.setCheckedItem(R.id.nav_chat);
-                            loadFragment(new ChatFragment());
+                            getSupportFragmentManager().beginTransaction().replace(R.id.frag_container,
+                                    new ChatFragment()).addToBackStack(null).commit();
                             break;
 
 
@@ -255,14 +253,15 @@ public class HomeActivity extends AppCompatActivity {
 
                         case R.id.meet_dev:
                             navigationView.setCheckedItem(R.id.meet_dev);
-                            loadFragment(new MeetDevFragment());
+                            getSupportFragmentManager().beginTransaction().replace(R.id.frag_container,
+                                    new MeetDevFragment()).addToBackStack(null).commit();
                             break;
 
                         default:
                             break;
                     }
                     menuItem.setChecked(true);
-                    setTitle(menuItem.getTitle());
+                    //setTitle(menuItem.getTitle());
                     drawerLayout.closeDrawer(GravityCompat.START);
                     return true;
                 }
@@ -277,21 +276,6 @@ public class HomeActivity extends AppCompatActivity {
             super.onBackPressed();
 
         moveTaskToBack(true);
-    }
-    private void loadFragment(Fragment fragment) {
-        if(getCurrentFragment() != fragment){
-            FragmentManager fm = getSupportFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-
-            if(getCurrentFragment()!=null)
-            {
-                fm.beginTransaction().remove(getCurrentFragment()).commit();
-            }
-
-            ft.setCustomAnimations(R.anim.fade_in,R.anim.fade_out).replace(R.id.frag_container, fragment);
-            //ft.commit();
-            ft.commitNow();
-        }
     }
 
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

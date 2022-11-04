@@ -27,16 +27,12 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_welcome);
-        t1=findViewById(R.id.name_profile);
-        t2=findViewById(R.id.to);
         t3=findViewById(R.id.name);
         im1=findViewById(R.id.imageView);
         top = AnimationUtils.loadAnimation(this, R.anim.top);
         bottom = AnimationUtils.loadAnimation(this, R.anim.bottom);
 
         im1.setAnimation(top);
-        t1.setAnimation(bottom);
-        t2.setAnimation(top);
         t3.setAnimation(bottom);
         new Handler().postDelayed(new Runnable()
         {

@@ -13,6 +13,7 @@
     <color name= "purple_700">#12345678</color>
     <color name= "purple_200">#12345678</color>
     <color name="edittextColor">#DDDDDD</color>
+    <color name="bgAccent">#fDDDDD</color>
 
 
 </resources>

@@ -10,12 +10,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
+        <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/no_internet_image"
-            android:layout_width="wrap_content"
-            android:layout_height="300dp"
-            android:layout_marginTop="128dp"
-            android:src="@drawable/no_internet" />
+            android:layout_width="402dp"
+            android:layout_height="321dp"
+            android:layout_marginVertical="50dp"
+            android:layout_marginTop="108dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/no_internet" />
 
         <TextView
             android:id="@+id/no_internet_heading"
@@ -46,9 +53,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/no_internet_text"
             android:layout_centerHorizontal="true"
-            android:backgroundTint="@color/black"
+            android:backgroundTint="@color/colorAccent"
             android:paddingHorizontal="32dp"
-            android:text="Try_Again"
+            android:text="Try Again"
             android:textAllCaps="false"
             app:cornerRadius="16dp" />
 
@@ -58,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/try_again_button"
             android:layout_centerHorizontal="true"
-            android:backgroundTint="@color/black"
+            android:backgroundTint="@color/colorAccent"
             android:paddingHorizontal="32dp"
             android:text="Local Music"
             android:textAllCaps="false"

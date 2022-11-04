@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:iconTint="@color/white"
+        android:iconTint="@color/colorPrimaryDark"
         android:id="@+id/local"
         android:title="Local Storage"
         android:icon="@drawable/ic_store"/>
 
     <item
-        android:iconTint="@color/white"
+        android:iconTint="@color/colorPrimaryDark"
         android:id="@+id/myplaylists"
         android:title="My Playlists"
         android:icon="@drawable/ic_playlist"/>
@@ -24,19 +24,19 @@
             <menu>
 
                 <item
-                    android:iconTint="@color/white"
+                    android:iconTint="@color/colorPrimaryDark"
                     android:id="@+id/nav_userlist"
                     android:title="List of Users"
                     android:icon="@drawable/ic_person"/>
 
                 <item
-                    android:iconTint="@color/white"
+                    android:iconTint="@color/colorPrimaryDark"
                     android:id="@+id/nav_friends"
                     android:title="Friends"
                     android:icon="@drawable/ic_person"/>
 
                 <item
-                    android:iconTint="@color/white"
+                    android:iconTint="@color/colorPrimaryDark"
                     android:id="@+id/nav_chat"
                     android:title="Chat"
                     android:icon="@drawable/ic_chat"/>

@@ -165,7 +165,7 @@ public class UserProfileActivity extends AppCompatActivity implements Navigation
 
                         case R.id.nav_user_home:
                             navigationView.setCheckedItem(R.id.nav_user_home);
-                            startActivity(new Intent(UserProfileActivity.this, MainActivity.class));
+                            startActivity(new Intent(UserProfileActivity.this, HomeActivity.class));
                             break;
 
                         case R.id.delete_user:

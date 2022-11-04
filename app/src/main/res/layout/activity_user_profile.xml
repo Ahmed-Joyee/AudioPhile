@@ -7,7 +7,7 @@
     tools:openDrawer="start"
     android:background="@color/white"
     android:id="@+id/prof_drawer"
-    tools:context=".MainActivity">
+    tools:context=".HomeActivity">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/prof_coordinator"
@@ -32,9 +32,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:overScrollMode="always"
-        android:background="@color/colorAccent"
+        android:background="@color/white"
         app:menu="@menu/user_menu"
-        android:theme="@style/NavTheme"
         app:headerLayout="@layout/menu_header"
         android:layout_gravity="start"/>
 

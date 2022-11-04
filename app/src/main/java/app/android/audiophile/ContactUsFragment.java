@@ -71,14 +71,14 @@ public class ContactUsFragment extends Fragment {
         Button btn1 = getActivity().findViewById(R.id.call_us_btn);
         Button btn2 = getActivity().findViewById(R.id.mail_us_btn);
 
-        btn1.setOnClickListener(v -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("tel:+01922321200"))));
+        btn1.setOnClickListener(v -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("tel:+8801922321200"))));
 
         btn2.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_SENDTO);
             intent.setData(Uri.parse("mailto:")); // only email apps should handle this
             intent.putExtra(Intent.EXTRA_EMAIL, new String[] { "tasnimbinanwar2605@gmail.com" });
-            intent.putExtra(Intent.EXTRA_SUBJECT,"Clicked!");
-            intent.putExtra(Intent.EXTRA_TEXT,"We will get in touch with you.");
+            intent.putExtra(Intent.EXTRA_SUBJECT,"Opinion from a user.");
+            intent.putExtra(Intent.EXTRA_TEXT,"We are trying to contact you for the following reasons.");
 
             startActivity(Intent.createChooser(intent, "Chooser Title"));
         });

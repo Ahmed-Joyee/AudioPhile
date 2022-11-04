@@ -29,7 +29,7 @@
                 android:layout_width="83dp"
                 android:layout_height="33dp"
                 android:layout_marginTop="16dp"
-                android:src="@drawable/ic_baseline_post_add_24"
+                android:src="@drawable/ic_post_add"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.628"
                 app:layout_constraintStart_toStartOf="parent"
@@ -76,7 +76,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv"
                 android:layout_width="396dp"
-                android:layout_height="616dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginBottom="50dp"
                 app:layout_constraintBottom_toBottomOf="parent"
