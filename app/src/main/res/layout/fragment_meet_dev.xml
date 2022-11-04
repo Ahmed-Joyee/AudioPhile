@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorAccent"
+    tools:context=".MeetDevFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="50dp">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/us_json"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:layout_marginVertical="50dp"
+            app:lottie_rawRes="@raw/developer_team"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:elevation="50dp"
+                    android:textSize="24sp"
+                    android:fontFamily="@font/blantik"
+                    android:text="Mohima Ahmed Joyee"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:elevation="50dp"
+                    android:textSize="24sp"
+                    android:fontFamily="@font/blantik"
+                    android:text="Tasnim Bin Anwar"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:elevation="50dp"
+                    android:textSize="24sp"
+                    android:fontFamily="@font/blantik"
+                    android:text="Yeamin Kaiser"/>
+
+                <TextView
+                    android:id="@+id/t_voew"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:layout_marginVertical="15dp"
+                    android:elevation="50dp"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/muli_regular"
+                    android:text="Department of Computer Science and Engineering, University of Dhaka"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:layout_marginVertical="15dp"
+                    android:elevation="50dp"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/muli_regular"
+                    android:text="Batch 26 (Session 2019-2020)"/>
+
+
+            </LinearLayout>
+
+        </ScrollView>
+    </LinearLayout>
+
+</FrameLayout>

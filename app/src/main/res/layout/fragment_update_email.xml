@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:layout_gravity="center_vertical"
+    android:gravity="center"
+    tools:context="UpdateEmailFragment">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/email_json"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_marginVertical="10dp"
+        app:lottie_rawRes="@raw/email"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Change Your Email Address"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_marginHorizontal="20dp"
+        android:fontFamily="@font/flinton"
+        android:gravity="center"
+        android:textSize="30sp" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/up_mail"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint=" New Email"
+        android:gravity="center"
+        android:layout_margin="30dp"
+        android:paddingBottom="10dp"
+        android:textColorHint="@color/colorPrimaryDark"
+        app:boxCornerRadiusBottomEnd="100dp"
+        app:boxCornerRadiusBottomStart="100dp"
+        app:boxCornerRadiusTopEnd="100dp"
+        app:boxCornerRadiusTopStart="100dp"
+        app:boxStrokeColor="@color/colorPrimaryDark"
+        app:boxStrokeWidth="3dp"
+        app:boxStrokeWidthFocused="4dp"
+        app:endIconMode="clear_text"
+        app:endIconTint="@color/colorPrimaryDark"
+        app:hintTextColor="@color/colorPrimaryDark"
+        app:startIconDrawable="@drawable/email"
+        app:startIconTint="@color/colorPrimaryDark">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimaryDark" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/email_change"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Done"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        android:textColor="@color/white"
+        style="@style/TextAppearance.MaterialComponents.Button"
+        android:background="@drawable/round_corners"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:elevation="10dp"
+        android:layout_marginHorizontal="60dp"/>
+
+</LinearLayout>

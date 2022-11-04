@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/profile"
+        android:id="@+id/feed"
         android:icon="@drawable/ic_profile"
         app:cnb_backgroundColor="@color/colorPrimary"
         app:cnb_iconColor="#ffffff"
@@ -10,7 +10,7 @@
         android:title="Newsfeed"/>
 
     <item
-        android:id="@+id/local"
+        android:id="@+id/explore"
         android:icon="@drawable/ic_local"
         app:cnb_backgroundColor="@color/colorPrimary"
         app:cnb_iconColor="#ffffff"
@@ -23,7 +23,7 @@
         app:cnb_backgroundColor="@color/colorPrimary"
         app:cnb_iconColor="#ffffff"
         app:cnb_textColor="#ffffff"
-        android:title="Search"/>
+        android:title="Chat"/>
 
     <item
         android:id="@+id/friend"
@@ -31,6 +31,6 @@
         app:cnb_backgroundColor="@color/colorPrimary"
         app:cnb_iconColor="#ffffff"
         app:cnb_textColor="#ffffff"
-        android:title="Notifications"/>
+        android:title="Friends"/>
 
 </menu>

@@ -4,7 +4,7 @@
 
     <item
         android:iconTint="@color/white"
-        android:id="@+id/local_store"
+        android:id="@+id/local"
         android:title="Local Storage"
         android:icon="@drawable/ic_store"/>
 
@@ -79,7 +79,7 @@
             <menu>
 
                 <item
-                    android:id="@+id/who_are_we_btn"
+                    android:id="@+id/meet_dev"
                     android:icon="@drawable/ic_us"
                     android:iconTint="@color/white"
                     android:title="Meet the Devs"/>

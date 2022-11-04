@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".SettingsFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="80dp"
+        android:layout_marginHorizontal="30dp"
+        android:orientation="vertical">
+
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottie_json"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:layout_marginVertical="50dp"
+            app:lottie_rawRes="@raw/settings"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center">
+
+            <LinearLayout
+                android:id="@+id/layout_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:defaultFocusHighlightEnabled="false"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:focusedByDefault="false"
+                android:orientation="vertical"
+                android:paddingHorizontal="10dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/up_name"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:hint="Name"
+                    android:paddingBottom="10dp"
+                    android:textColorHint="@color/colorPrimaryDark"
+                    app:boxCornerRadiusBottomEnd="100dp"
+                    app:boxCornerRadiusBottomStart="100dp"
+                    app:boxCornerRadiusTopEnd="100dp"
+                    app:boxCornerRadiusTopStart="100dp"
+                    app:boxStrokeColor="@color/colorPrimaryDark"
+                    app:boxStrokeWidth="3dp"
+                    app:boxStrokeWidthFocused="4dp"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/colorPrimaryDark"
+                    app:hintTextColor="@color/colorPrimaryDark"
+                    app:startIconDrawable="@drawable/ic_person"
+                    app:startIconTint="@color/colorPrimaryDark">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:textAlignment="center"
+                        android:textAllCaps="true"
+                        android:textColor="@color/colorPrimaryDark" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/up_username"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Username"
+                    android:paddingBottom="10dp"
+                    android:textColorHint="@color/colorPrimaryDark"
+                    app:boxCornerRadiusBottomEnd="100dp"
+                    app:boxCornerRadiusBottomStart="100dp"
+                    app:boxCornerRadiusTopEnd="100dp"
+                    app:boxCornerRadiusTopStart="100dp"
+                    app:boxStrokeColor="@color/colorPrimaryDark"
+                    app:boxStrokeWidth="3dp"
+                    app:boxStrokeWidthFocused="4dp"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/colorPrimaryDark"
+                    app:hintTextColor="@color/colorPrimaryDark"
+                    app:startIconDrawable="@drawable/ic_person"
+                    app:startIconTint="@color/colorPrimaryDark">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorPrimaryDark" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/up_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center"
+                    android:layout_marginHorizontal="30dp"
+                    android:layout_marginVertical="30dp"
+                    android:background="@drawable/round_corners"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:text="Done"
+                    android:textAlignment="center"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+
+                <ProgressBar
+                    android:id="@+id/sign_up_progress_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:visibility="invisible" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</ScrollView>

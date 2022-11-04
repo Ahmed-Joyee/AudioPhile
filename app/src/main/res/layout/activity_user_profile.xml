@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:openDrawer="start"
+    android:background="@color/white"
+    android:id="@+id/prof_drawer"
+    tools:context=".MainActivity">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/prof_coordinator"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <FrameLayout
+            android:id="@+id/prof_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/prof_navigation_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="always"
+        android:background="@color/colorAccent"
+        app:menu="@menu/user_menu"
+        android:theme="@style/NavTheme"
+        app:headerLayout="@layout/menu_header"
+        android:layout_gravity="start"/>
+
+</androidx.drawerlayout.widget.DrawerLayout >
