@@ -27,7 +27,7 @@
     <RelativeLayout
         android:id="@+id/record_view_relative_layout"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="80dp"
         android:layout_alignParentBottom="true">
 
         <com.devlomi.record_view.RecordView

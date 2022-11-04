@@ -58,6 +58,7 @@ public class UserProfileActivity extends AppCompatActivity implements Navigation
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getSupportActionBar().hide();
 
         drawerLayout = findViewById(R.id.prof_drawer);
         navigationView = findViewById(R.id.prof_navigation_view);

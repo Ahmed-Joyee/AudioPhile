@@ -47,6 +47,7 @@ public class OTPActivity extends AppCompatActivity {
         username = (String) bundle.get("username");
         mobile = (String) bundle.get("mobile");
         goSomewhere(verificationId);
+        getSupportActionBar().hide();
     }
 
     public void goSomewhere(String verificationId) {

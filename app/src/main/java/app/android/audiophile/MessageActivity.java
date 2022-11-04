@@ -79,6 +79,7 @@ public class MessageActivity extends AppCompatActivity {
         hisUsername = getIntent().getStringExtra("hisUsername");
         Log.d("MessageActivity", hisUsername);
         set();
+        getSupportActionBar().hide();
 
         binding.btnSend.setOnClickListener(new View.OnClickListener() {
             @Override

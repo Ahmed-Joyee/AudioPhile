@@ -56,6 +56,7 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        getSupportActionBar().hide();
 
 
         FirebaseApp.initializeApp(/*context=*/ this);
@@ -91,7 +92,7 @@ public class RegisterActivity extends AppCompatActivity {
                 fullName = ((EditText) findViewById(R.id.regFullName)).getText().toString();
                 password = ((EditText) findViewById(R.id.regPassword)).getText().toString();
                 mobile = ((EditText) findViewById(R.id.regPhoneNumber)).getText().toString();
-                mobile = "+1" + mobile;
+                mobile = "+88" + mobile;
                 Log.wtf("mobile", mobile);
                 if (email == "" || password == "" || mobile == "" || fullName == "" || username == "") {
                     Toast.makeText(RegisterActivity.this, "Information is incorrect.", Toast.LENGTH_LONG).show();
@@ -150,7 +151,7 @@ public class RegisterActivity extends AppCompatActivity {
                 fullName = ((EditText) findViewById(R.id.regFullName)).getText().toString();
                 password = ((EditText) findViewById(R.id.regPassword)).getText().toString();
                 mobile = ((EditText) findViewById(R.id.regPhoneNumber)).getText().toString();
-                mobile = "+1" + mobile;
+                mobile = "+88" + mobile;
                 Log.wtf("mobile", mobile);
                 if (email == "" || password == "" || mobile == "" || fullName == "" || username == "") {
                     Toast.makeText(RegisterActivity.this, "Information is incorrect.", Toast.LENGTH_LONG).show();

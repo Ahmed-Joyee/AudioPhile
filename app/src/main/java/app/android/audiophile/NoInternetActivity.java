@@ -21,6 +21,7 @@ public class NoInternetActivity extends AppCompatActivity {
         setContentView(R.layout.activity_no_internet);
         checkInternet();
         goLocalMusic();
+        getSupportActionBar().hide();
     }
 
     private boolean isNetworkAvailable() {
