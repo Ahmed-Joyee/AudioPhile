@@ -81,6 +81,7 @@ public class SearchFriendsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         bundle = getArguments();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);

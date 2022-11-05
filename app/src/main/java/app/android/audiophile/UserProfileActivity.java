@@ -15,6 +15,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -37,6 +38,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -68,25 +72,27 @@ public class UserProfileActivity extends AppCompatActivity implements Navigation
         nav_name = (TextView) headerView.findViewById(R.id.nav_header_name);
 
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        reference = FirebaseDatabase.getInstance().getReference("users");
-        checkUser = reference.orderByChild("id").equalTo(uid);
+        reference = FirebaseDatabase.getInstance().getReference("Users").child(uid);
+//        checkUser = reference.orderByChild("id").equalTo(uid);
 
         loadFragment(new SettingsFragment());
         Menu menu = navigationView.getMenu();
         MenuItem item1 = menu.getItem(1);
         item1.setChecked(true);
 
-        checkUser.addListenerForSingleValueEvent(new ValueEventListener() {
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
-                    username = snapshot.child(uid).child("username").getValue(String.class);
-                    name = snapshot.child(uid).child("name").getValue(String.class);
-                    em = snapshot.child(uid).child("email").getValue(String.class);
-                    ph = snapshot.child(uid).child("phone").getValue(String.class);
-                    pass = snapshot.child(uid).child("password").getValue(String.class);
+                    User user = snapshot.getValue(User.class);
+                    username = user.getUsername();
+                    em = user.getEmail();
+                    ph = user.getMobile();
+                    pass = user.getPassword();
+                    username.toUpperCase();
+                    em.toLowerCase();
                     nav_user_name.setText(username );
-                    nav_name.setText(name);
+                    nav_name.setText(em);
                     Log.i(TAG, "onDataChange: " + username);
                 }
                 else{
@@ -180,8 +186,45 @@ public class UserProfileActivity extends AppCompatActivity implements Navigation
                                     "Yes",
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
-                                            FirebaseDatabase.getInstance().getReference("emails").child(username).removeValue();
-                                            FirebaseDatabase.getInstance().getReference("users").child(uid).removeValue();
+                                            FirebaseDatabase.getInstance().getReference().child("Users").addValueEventListener(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                    User user = snapshot.getValue(User.class);
+                                                    List<UsernameAndUId>friends = user.getFriends();
+                                                    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+                                                    mDatabase.child("Users").child(user.getuId()).child("friends").orderByChild("uId").equalTo(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                            if(snapshot.getChildrenCount() > 0){
+                                                                int idx = -1;
+                                                                for(int i = 0; i < friends.size(); i++){
+                                                                    if(friends.get(i).getuId()==uid){
+                                                                        idx = i;
+                                                                        break;
+                                                                    }
+                                                                }
+                                                                friends.remove(idx);
+                                                                mDatabase.child("Users").child(user.uId).child("friends").setValue(friends);
+                                                            }else{
+
+                                                            }
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                                        }
+                                                    });
+                                                }
+
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                                }
+                                            });
+//                                            FirebaseDatabase.getInstance().getReference("Users").child(uid).removeValue();
+//                                            FirebaseDatabase.getInstance().getReference("users").child(uid).removeValue();
+
                                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
                                             user.delete()
@@ -196,7 +239,7 @@ public class UserProfileActivity extends AppCompatActivity implements Navigation
                                             if(FirebaseAuth.getInstance().getCurrentUser() != null){
                                                 FirebaseAuth.getInstance().signOut();
                                             }
-                                            startActivity(new Intent(UserProfileActivity.this, RegisterActivity.class));
+                                            startActivity(new Intent(UserProfileActivity.this, LoginActivity.class));
                                             dialog.cancel();
                                         }
                                     });

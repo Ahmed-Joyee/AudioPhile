@@ -3,6 +3,7 @@ package app.android.audiophile;
 import static android.content.ContentValues.TAG;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,10 +15,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,6 +30,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -99,7 +109,7 @@ public class SettingsFragment extends Fragment {
 
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        Query check = FirebaseDatabase.getInstance().getReference("users").orderByChild("id").equalTo(uid);
+        Query check = FirebaseDatabase.getInstance().getReference("Users");
 
         check.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -125,24 +135,6 @@ public class SettingsFragment extends Fragment {
                 progressDialog.setCanceledOnTouchOutside(false);
                 //progressDialog.show();
                 String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-                Query check = FirebaseDatabase.getInstance().getReference("users").orderByChild("id").equalTo(uid);
-
-                check.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if(snapshot.exists()){
-                            em = snapshot.child(uid).child("email").getValue(String.class);
-                            us = snapshot.child(uid).child("username").getValue(String.class);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        progressDialog.dismiss();
-                    }
-                });
-
                 String user = username.getEditText().getText().toString().trim();
 
                 Log.i(TAG, "onClick: " + " " + us + " " + em);
@@ -162,34 +154,41 @@ public class SettingsFragment extends Fragment {
                 }
                 else
                 {
-                    Query checkUser = FirebaseDatabase.getInstance().getReference("users").orderByChild("username").equalTo(user);
-
-                    checkUser.addListenerForSingleValueEvent(new ValueEventListener() {
+                    FirebaseDatabase.getInstance().getReference("Users").child(uid).child("username").setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if(snapshot.exists()){
-                                if(user.equals(us))
-                                {
-                                    Log.i(TAG, "onDataChange: exists");
-                                    changeUser(user);
-                                }
-                                else
-                                {
-                                    username.setError("Username already in use");
-                                }
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()){
+                                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                db.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if(task.isSuccessful()){
+                                            for(QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                                                Map<String, Object> mp = documentSnapshot.getData();
+                                                Log.d("SettingsFragment", mp.get("uId").toString());
+                                                if(mp.get("uId").toString().equals(uid)){
+                                                    Map<String,Object>mp2 = new HashMap<>();
+                                                    mp2.put("uId", uid);
+                                                    mp2.put("username", user);
+                                                    Log.d("SettingsFragment", documentSnapshot.getId());
+                                                    db.collection("users").document(documentSnapshot.getId()).update(mp2);
+                                                }
+                                            }
+                                        }
+                                        else{
+                                            Log.d("SettingsFragment", "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                                Toast.makeText(getContext(), "Successfully username changed, you can go back now", Toast.LENGTH_SHORT).show();
+                                //successful
                             }
-                            else
-                            {
-                                FirebaseDatabase.getInstance().getReference("emails").child(us).removeValue();
-                                changeUser(user);
+                            else{
+                                //mara
                             }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
                         }
                     });
+
                 }
             }
         });
@@ -200,7 +199,7 @@ public class SettingsFragment extends Fragment {
         String currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         UserModel helperClass = new UserModel(user, em, pass,currentuser);
-        FirebaseDatabase.getInstance().getReference("users").child(currentuser).setValue(helperClass);
+        FirebaseDatabase.getInstance().getReference("Users").child(currentuser).setValue(helperClass);
 
         us = user;
 
