@@ -1,6 +1,9 @@
 package app.android.audiophile;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +16,10 @@ import java.util.ArrayList;
 
 public class SuggestionAdapter extends RecyclerView.Adapter<SuggestionAdapter.ViewHolder> {
 
-    private ArrayList<String>nameOfSongs;
+    private ArrayList<YoutubePlay>nameOfSongs;
     Context context;
 
-    public SuggestionAdapter(ArrayList<String> nameOfSongs, Context context) {
+    public SuggestionAdapter(ArrayList<YoutubePlay> nameOfSongs, Context context) {
         this.nameOfSongs = nameOfSongs;
         this.context = context;
     }
@@ -30,7 +33,22 @@ public class SuggestionAdapter extends RecyclerView.Adapter<SuggestionAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull SuggestionAdapter.ViewHolder holder, int position) {
-        holder.titleTextView.setText(nameOfSongs.get(position));
+        holder.titleTextView.setText(nameOfSongs.get(position).getNameOfSong());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String id = nameOfSongs.get(position).getVideoId();
+                Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
+                Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("http://www.youtube.com/watch?v=" + id));
+                try {
+                    context.startActivity(appIntent);
+                } catch (ActivityNotFoundException ex) {
+                    context.startActivity(webIntent);
+                }
+            }
+        });
     }
 
     @Override
@@ -38,7 +56,7 @@ public class SuggestionAdapter extends RecyclerView.Adapter<SuggestionAdapter.Vi
         return nameOfSongs.size();
     }
 
-    public void filterList(ArrayList<String> filterlist) {
+    public void filterList(ArrayList<YoutubePlay> filterlist) {
         nameOfSongs = filterlist;
         notifyDataSetChanged();
     }

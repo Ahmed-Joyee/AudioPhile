@@ -1,5 +1,8 @@
 package app.android.audiophile;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
@@ -96,7 +99,8 @@ public class ExploreFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.suggestionRV);
 
 
-        ArrayList<String>nameOfSongs = new ArrayList<>();
+        recyclerView.setHasFixedSize(true);
+        ArrayList<YoutubePlay>nameOfSongs = new ArrayList<>();
         SuggestionAdapter adapter = new SuggestionAdapter(nameOfSongs, view.getContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -104,24 +108,33 @@ public class ExploreFragment extends Fragment {
         text.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+//                if(text.getText().toString().equals("")){
+                    nameOfSongs.clear();
+                    linearLayout.setVisibility(View.INVISIBLE);
+                    adapter.filterList(nameOfSongs);
+//                }
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if(!text.getText().toString().equals("")){
                     btn.setVisibility(View.VISIBLE);
-//                    linearLayout.setVisibility(View.INVISIBLE);
+                    linearLayout.setVisibility(View.INVISIBLE);
                 }
                 else {
                     btn.setVisibility(View.INVISIBLE);
+                    linearLayout.setVisibility(View.INVISIBLE);
 //                    linearLayout.setVisibility(View.INVISIBLE);
                 }
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-
+//                if(text.getText().toString().equals("")){
+                    linearLayout.setVisibility(View.INVISIBLE);
+                    nameOfSongs.clear();
+                    adapter.filterList(nameOfSongs);
+//                }
             }
         });
         btn.setOnClickListener(new View.OnClickListener() {
@@ -142,9 +155,10 @@ public class ExploreFragment extends Fragment {
                                     Log.d("ExplorerFragment", title);
                                     linearLayout.setVisibility(View.VISIBLE);
                                     textView.setText("Are you searching for :" + title);
+                                    textView.setVisibility(View.VISIBLE);
                                     JSONObject id = item.getJSONObject("id");
                                     videoId = id.getString("videoId");
-//                                    linearLayout.setVisibility(View.VISIBLE);
+                                    linearLayout.setVisibility(View.VISIBLE);
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -160,6 +174,24 @@ public class ExploreFragment extends Fragment {
                 }
             }
         });
+
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(textView.getVisibility()==View.VISIBLE){
+                    Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + videoId));
+                    Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("http://www.youtube.com/watch?v=" + videoId));
+                    try {
+                        view.getContext().startActivity(appIntent);
+                    } catch (ActivityNotFoundException ex) {
+                        view.getContext().startActivity(webIntent);
+                    }
+                }
+            }
+        });
+
+
 
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,9 +211,9 @@ public class ExploreFragment extends Fragment {
                                     JSONObject snippet = item.getJSONObject("snippet");
                                     String title = snippet.getString("title");
                                     Log.d("ExplorerFragment", title);
-                                    nameOfSongs.add(title);
                                     JSONObject id = item.getJSONObject("id");
                                     videoId = id.getString("videoId");
+                                    nameOfSongs.add(new YoutubePlay(title, videoId));
                                 }
                                 adapter.filterList(nameOfSongs);
                             } catch (JSONException e) {

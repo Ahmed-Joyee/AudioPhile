@@ -222,7 +222,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
                         case R.id.explore:
                             actionBar.hide();
-                            appBarLayout.setVisibility(View.VISIBLE);
+                            appBarLayout.setVisibility(View.INVISIBLE);
                             navigationView.setCheckedItem(R.id.explore);
                             fragment = new ExploreFragment();
                             fragment.setArguments(bundle);
