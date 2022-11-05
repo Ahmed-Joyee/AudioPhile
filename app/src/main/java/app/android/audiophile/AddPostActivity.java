@@ -39,6 +39,7 @@ public class AddPostActivity extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         ProgressDialog dialog=new ProgressDialog(this);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        
 
         Button addPostBtn=findViewById(R.id.addpost_btn);
         TextView puniv=findViewById(R.id.puniv);
