@@ -60,7 +60,7 @@ public class AccEmailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String email = ((EditText) findViewById(R.id.forgetPassEmail)).getText().toString();
-                if (resetByPhone == "0") {
+                if (resetByPhone.equals("0")) {
                     checkEmailExistsOrNot(email);
                 } else {
                     fAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
