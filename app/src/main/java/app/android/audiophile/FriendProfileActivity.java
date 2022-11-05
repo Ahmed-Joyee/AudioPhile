@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -56,7 +57,10 @@ public class FriendProfileActivity extends AppCompatActivity {
                         if(task.isSuccessful()){
                             User user1 = task.getResult().getValue(User.class);
                             Log.d(TAG, user1.getUsername());
+//                            Toast.makeText(FriendProfileActivity.this, "Friend Added",Toast.LENGTH_SHORT).show();;
                             user1.addFriends(new User(username, userUId));
+
+                            Toast.makeText(FriendProfileActivity.this, "Friend Added, You can go back now",Toast.LENGTH_SHORT).show();;
                         }
                     }
                 });
