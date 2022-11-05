@@ -5,12 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,6 +35,7 @@ public class AddPostActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_post);
+//        getActionBar().hide();
         fAuth = FirebaseAuth.getInstance();
         ProgressDialog dialog=new ProgressDialog(this);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -42,8 +45,7 @@ public class AddPostActivity extends AppCompatActivity {
         TextView username=findViewById(R.id.usName);
         TextView posttext=findViewById(R.id.posttext);
         ImageView imgselect=findViewById(R.id.imgselect);
-
-
+        TextView postedMessage = findViewById(R.id.postedMessage);
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(fAuth.getCurrentUser().getUid());
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -68,14 +70,15 @@ public class AddPostActivity extends AppCompatActivity {
                 String description=posttext.getText().toString();
                 if(!description.isEmpty())
                 {
-                    addPostBtn.setBackgroundDrawable(ContextCompat.getDrawable(getApplication(),R.drawable.left_side_background));
+                    addPostBtn.setBackgroundDrawable(ContextCompat.getDrawable(getApplication(),R.drawable.right_side_background));
                     addPostBtn.setTextColor(getApplication().getResources().getColor(R.color.light_pink));
                     addPostBtn.setEnabled(true);
                     imgselect.setVisibility(View.VISIBLE);
+                    postedMessage.setVisibility(View.INVISIBLE);
                 }
                 else
                 {
-                    addPostBtn.setBackgroundDrawable(ContextCompat.getDrawable(getApplication(),R.drawable.right_side_background));
+                    addPostBtn.setBackgroundDrawable(ContextCompat.getDrawable(getApplication(),R.drawable.left_side_background));
 //                    addPostBtn.setTextColor(getApplication().getResources().getColor(R.color.);
                     imgselect.setVisibility(View.GONE);
                     addPostBtn.setEnabled(false);
@@ -97,6 +100,8 @@ public class AddPostActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Log.d("AddPostActivity", "post added");
+                        posttext.setText("");
+                        postedMessage.setVisibility(View.VISIBLE);
                     }
                 });
             }

@@ -10,7 +10,6 @@
     <!-- TODO: Update blank fragment layout -->
 
 
-
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -30,7 +29,7 @@
         android:layout_height="48dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/right_side_background"
+        android:background="@drawable/left_side_background"
         android:enabled="false"
         android:fontFamily="sans-serif-black"
         android:text="Post"
@@ -54,7 +53,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
-        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/puniv"
         app:layout_constraintEnd_toEndOf="parent"
@@ -67,6 +67,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/posttext"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -74,8 +75,9 @@
 
     <EditText
         android:id="@+id/posttext"
-        android:layout_width="403dp"
-        android:layout_height="573dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
         android:background="@android:color/transparent"
         android:ems="10"
         android:gravity="top"
@@ -87,11 +89,8 @@
         android:paddingRight="7dp"
         android:paddingBottom="5dp"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/imgselect"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view"
-        app:layout_constraintVertical_bias="0.464" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="16dp" />
 
     <ImageView
         android:id="@+id/imgselect"
@@ -104,6 +103,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+
+    <TextView
+        android:id="@+id/postedMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Posted"
+        android:textSize="25sp"
+        android:background = "@color/colorAccent"
+        android:visibility="invisible"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/imgselect"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:id="@+id/view2"
