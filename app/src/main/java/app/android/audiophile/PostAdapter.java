@@ -130,6 +130,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewholder>{
         return list.size();
     }
 
+    public void filter(ArrayList<Post>filter_list){
+        list = filter_list;
+        notifyDataSetChanged();
+    }
     public class viewholder extends RecyclerView.ViewHolder {
 
 

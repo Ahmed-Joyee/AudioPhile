@@ -98,26 +98,29 @@ public class FeedFragment extends Fragment {
         rv.addItemDecoration(new DividerItemDecoration(rv.getContext(),DividerItemDecoration.VERTICAL));
         rv.setNestedScrollingEnabled(true);
         rv.setAdapter(pp);
-
+        dashboardList.clear();  
         DatabaseReference databaseReference  = FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("friends");
         databaseReference.addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot data : snapshot.getChildren()){
                     UsernameAndUId usernameAndUId = data.getValue(UsernameAndUId.class);
                     FirebaseDatabase.getInstance().getReference().child("Users").child("posts").orderByChild("postedAt").addValueEventListener(new ValueEventListener() {
                         @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            dashboardList.clear();
-                            for(DataSnapshot dataSnapshot: snapshot.getChildren())
+                        public void onDataChange(@NonNull DataSnapshot snapshot1) {
+
+                            for(DataSnapshot dataSnapshot: snapshot1.getChildren())
                             {
                                 Post post=dataSnapshot.getValue(Post.class);
                                 post.setPostID(dataSnapshot.getKey());
                                 dashboardList.add(post);
                             }
                             Collections.reverse(dashboardList);
-                            pp.notifyDataSetChanged();
+//                            pp.notifyDataSetChanged();
+                            pp.filter(dashboardList);
                         }
+
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {

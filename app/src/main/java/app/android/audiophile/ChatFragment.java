@@ -169,9 +169,20 @@ public class ChatFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()){
                     UsernameAndUId usernameAndUId = dataSnapshot.getValue(UsernameAndUId.class);
-                    names.add(usernameAndUId);
+                    FirebaseDatabase.getInstance().getReference().child("Users").child(usernameAndUId.getuId()).child("username").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot1) {
+                            String x = snapshot1.getValue(String.class);
+                            names.add(new UsernameAndUId(usernameAndUId.getuId(),x));
+                            adapter.filterList(names);
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
                 }
-                adapter.filterList(names);
+//                adapter.filterList(names);
                 Log.d("ChatFragmentfFriendsize", new Integer(names.size()).toString());
             }
 
