@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:src="@drawable/general_close_icon"
-            app:tint="@color/black" />
+            app:tint="@color/light_pink" />
 
 
         <com.airbnb.lottie.LottieAnimationView
@@ -87,6 +87,7 @@
                     android:id="@+id/setNewPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimary"
                     android:inputType="textPassword" />
 
 
@@ -115,6 +116,7 @@
                     android:id="@+id/confirmNewPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimary"
                     android:inputType="textPassword" />
 
 

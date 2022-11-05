@@ -10,7 +10,7 @@
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/light_pink">
+        android:background="@color/white">
 
         <me.jagar.chatvoiceplayerlibrary.VoicePlayerView
             android:id="@+id/voicePlayerView"
@@ -23,7 +23,7 @@
             bind:playPauseBackgroundColor="@color/colorPrimary"
             bind:playPauseCornerRadius="100"
             bind:playProgressbarColor="@color/colorPrimary"
-            bind:progressTimeColor="@color/black"
+            bind:progressTimeColor="@color/colorPrimary"
             bind:seekBarProgressColor="#000"
             bind:seekBarThumbColor="@color/colorPrimary"
             bind:shareCornerRadius="100"
