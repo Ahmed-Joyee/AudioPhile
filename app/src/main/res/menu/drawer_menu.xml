@@ -43,12 +43,6 @@
 
                 <item
                     android:iconTint="@color/colorPrimaryDark"
-                    android:id="@+id/nav_friends"
-                    android:title="Friends"
-                    android:icon="@drawable/ic_person"/>
-
-                <item
-                    android:iconTint="@color/colorPrimaryDark"
                     android:id="@+id/nav_chat"
                     android:title="Chat"
                     android:icon="@drawable/ic_chat"/>

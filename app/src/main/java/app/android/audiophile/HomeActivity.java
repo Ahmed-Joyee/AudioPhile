@@ -256,17 +256,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                             getSupportFragmentManager().beginTransaction().replace(R.id.frag_container,
                                     fragment).addToBackStack(null).commit();
                             break;
-
-                        case R.id.nav_friends:
-                            actionBar.hide();
-                            appBarLayout.setVisibility(View.VISIBLE);
-                            fragment = new FriendFragment();
-                            fragment.setArguments(bundle);
-                            if(MyMediaPlayer.getInstance().isPlaying())MyMediaPlayer.getInstance().stop();
-                            navigationView.setCheckedItem(R.id.nav_userlist);
-                            getSupportFragmentManager().beginTransaction().replace(R.id.frag_container,
-                                    fragment).addToBackStack(null).commit();
-                            break;
+                            
 
                         case R.id.contact_btn:
                             actionBar.hide();

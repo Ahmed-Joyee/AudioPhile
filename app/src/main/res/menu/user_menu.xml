@@ -28,12 +28,5 @@
             android:id="@+id/nav_mail"
             android:title="Change Email Address"
             android:icon="@drawable/ic_email" />
-
-
-        <item
-            android:id="@+id/delete_user"
-            android:icon="@drawable/ic_delete"
-            android:iconTint="@color/light_pink"
-            android:title="Delete Account"/>
     </group>
 </menu>
