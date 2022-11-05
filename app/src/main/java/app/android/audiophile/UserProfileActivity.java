@@ -25,6 +25,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -54,6 +55,7 @@ public class UserProfileActivity extends AppCompatActivity implements Navigation
     Query checkUser;
 
     String name, em, username, ph, pass, uid;
+    private long pressedTime;
 
     static final float END_SCALE = 0.7f;
 
@@ -190,12 +192,16 @@ public class UserProfileActivity extends AppCompatActivity implements Navigation
     public void onBackPressed() {
         if (drawerLayout.isDrawerVisible(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
-        } else
-        {
-            super.onBackPressed();
         }
+        else if (pressedTime + 2000 > System.currentTimeMillis()) {
+            super.onBackPressed();
+            finish();
+        } else {
+            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
+        }
+        pressedTime = System.currentTimeMillis();
 
-        moveTaskToBack(true);
+        //moveTaskToBack(true);
     }
     private void loadFragment(Fragment fragment) {
         if(getCurrentFragment() != fragment){

@@ -24,6 +24,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -53,6 +54,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private String name, em, username, ph, pass, uid;
     private NavigationView navigationView;
     ActionBar actionBar;
+    private long pressedTime;
 
     AppBarLayout appBarLayout;
 
@@ -328,10 +330,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public void onBackPressed() {
         if (drawerLayout.isDrawerVisible(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
-        } else
+        }
+        else if (pressedTime + 2000 > System.currentTimeMillis()) {
             super.onBackPressed();
+            finish();
+        } else {
+            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
+        }
+        pressedTime = System.currentTimeMillis();
 
-        moveTaskToBack(true);
+        //moveTaskToBack(true);
     }
 
     @Override
