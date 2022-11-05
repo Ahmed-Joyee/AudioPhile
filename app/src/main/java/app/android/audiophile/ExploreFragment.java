@@ -97,7 +97,7 @@ public class ExploreFragment extends Fragment {
         LinearLayout linearLayout = view.findViewById(R.id.searchLinearLayout);
         TextView textView = view.findViewById(R.id.searchForSongsResult);
         RecyclerView recyclerView = view.findViewById(R.id.suggestionRV);
-
+        TextView tt = view.findViewById(R.id.suggestionText);
 
         recyclerView.setHasFixedSize(true);
         ArrayList<YoutubePlay>nameOfSongs = new ArrayList<>();
@@ -110,7 +110,7 @@ public class ExploreFragment extends Fragment {
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 //                if(text.getText().toString().equals("")){
                     nameOfSongs.clear();
-                    linearLayout.setVisibility(View.INVISIBLE);
+//                    linearLayout.setVisibility(View.INVISIBLE);
                     adapter.filterList(nameOfSongs);
 //                }
             }
@@ -119,11 +119,11 @@ public class ExploreFragment extends Fragment {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if(!text.getText().toString().equals("")){
                     btn.setVisibility(View.VISIBLE);
-                    linearLayout.setVisibility(View.INVISIBLE);
+//                    linearLayout.setVisibility(View.INVISIBLE);
                 }
                 else {
                     btn.setVisibility(View.INVISIBLE);
-                    linearLayout.setVisibility(View.INVISIBLE);
+//                    linearLayout.setVisibility(View.INVISIBLE);
 //                    linearLayout.setVisibility(View.INVISIBLE);
                 }
             }
@@ -131,7 +131,7 @@ public class ExploreFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
 //                if(text.getText().toString().equals("")){
-                    linearLayout.setVisibility(View.INVISIBLE);
+//                    linearLayout.setVisibility(View.INVISIBLE);
                     nameOfSongs.clear();
                     adapter.filterList(nameOfSongs);
 //                }
@@ -193,7 +193,7 @@ public class ExploreFragment extends Fragment {
 
 
 
-        linearLayout.setOnClickListener(new View.OnClickListener() {
+        tt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 nameOfSongs.clear();
@@ -212,8 +212,8 @@ public class ExploreFragment extends Fragment {
                                     String title = snippet.getString("title");
                                     Log.d("ExplorerFragment", title);
                                     JSONObject id = item.getJSONObject("id");
-                                    videoId = id.getString("videoId");
-                                    nameOfSongs.add(new YoutubePlay(title, videoId));
+                                    String videoId1 = id.getString("videoId");
+                                    nameOfSongs.add(new YoutubePlay(title, videoId1));
                                 }
                                 adapter.filterList(nameOfSongs);
                             } catch (JSONException e) {
