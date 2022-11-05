@@ -13,6 +13,7 @@ public class SelectResetPassActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_reset_pass);
+        getSupportActionBar().hide();
 
         goResetUsingEmail();
         goResetUsingMobile();

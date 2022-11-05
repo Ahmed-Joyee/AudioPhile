@@ -12,8 +12,7 @@ public class UserModel {
         this.username = username;
     }
 
-    public UserModel(String name, String username, String email, String password,String id) {
-        this.name = name;
+    public UserModel(String username, String email, String password,String id) {
         this.username = username;
         this.email = email;
         this.password = password;
@@ -26,10 +25,6 @@ public class UserModel {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public void setName(String name) {
