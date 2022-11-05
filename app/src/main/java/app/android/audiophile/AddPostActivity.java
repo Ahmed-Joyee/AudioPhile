@@ -73,14 +73,14 @@ public class AddPostActivity extends AppCompatActivity {
                     addPostBtn.setBackgroundDrawable(ContextCompat.getDrawable(getApplication(),R.drawable.right_side_background));
                     addPostBtn.setTextColor(getApplication().getResources().getColor(R.color.light_pink));
                     addPostBtn.setEnabled(true);
-                    imgselect.setVisibility(View.VISIBLE);
+//                    imgselect.setVisibility(View.VISIBLE);
                     postedMessage.setVisibility(View.INVISIBLE);
                 }
                 else
                 {
                     addPostBtn.setBackgroundDrawable(ContextCompat.getDrawable(getApplication(),R.drawable.left_side_background));
 //                    addPostBtn.setTextColor(getApplication().getResources().getColor(R.color.);
-                    imgselect.setVisibility(View.GONE);
+//                    imgselect.setVisibility(View.GONE);
                     addPostBtn.setEnabled(false);
                 }
             }

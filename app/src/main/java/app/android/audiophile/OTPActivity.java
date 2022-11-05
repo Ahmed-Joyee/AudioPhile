@@ -74,6 +74,7 @@ public class OTPActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     FirebaseUser uu = FirebaseAuth.getInstance().getCurrentUser();
                                     User user = new User(email, username, password, uu.getUid(), mobile, true, true);
+                                    user.friends.add(new UsernameAndUId(uu.getUid(),username));
                                     user.InsertIntoDb();
                                     user.uIdByEmail();
                                     user.usernameByEmail();

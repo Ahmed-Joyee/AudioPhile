@@ -113,6 +113,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 } else {
                                     FirebaseUser uu = FirebaseAuth.getInstance().getCurrentUser();
                                     User user = new User(email, username, password, uu.getUid(), mobile, false, false);
+                                    user.friends.add(new UsernameAndUId(uu.getUid(),username));
                                     user.InsertIntoDb();
                                     user.uIdByEmail();
                                     user.usernameByEmail();
@@ -251,6 +252,7 @@ public class RegisterActivity extends AppCompatActivity {
                             //uId hoilo key
                             FirebaseUser uu = FirebaseAuth.getInstance().getCurrentUser();
                             User user = new User(email, username, password, uu.getUid(), mobile, true, true);
+                            user.friends.add(new UsernameAndUId(uu.getUid(),username));
                             user.InsertIntoDb();
                             user.uIdByEmail();
                             user.usernameByEmail();
