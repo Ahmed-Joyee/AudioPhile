@@ -3,6 +3,7 @@ package app.android.audiophile;
 import static android.content.ContentValues.TAG;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -117,10 +123,37 @@ public class UpdateEmailFragment extends Fragment {
                                     if (task.isSuccessful()) {
                                         progressDialog.dismiss();
                                         Log.d(TAG, "User Email updated.");
-                                        FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                        databaseReference.addValueEventListener(new ValueEventListener() {
                                             @Override
-                                            public void onSuccess(Void unused) {
-                                                Toast.makeText(getActivity(), "Verification Email sent", Toast.LENGTH_SHORT).show();
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                User user = snapshot.getValue(User.class);
+                                                user.setEmail(mail);
+                                                user.setEmailVerified(false);
+                                                user.setPhoneVerified(false);
+                                                user.isPhoneVerified = false;
+                                                user.isEmailVerified = false;
+                                                user.uIdByEmail();
+                                                databaseReference.setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if(task.isSuccessful()){
+                                                            FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                @Override
+                                                                public void onSuccess(Void unused) {
+                                                                    Toast.makeText(getActivity(), "Verification Email sent", Toast.LENGTH_SHORT).show();
+                                                                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                                    startActivity(intent);
+                                                                }
+                                                            });
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
                                             }
                                         });
                                     }

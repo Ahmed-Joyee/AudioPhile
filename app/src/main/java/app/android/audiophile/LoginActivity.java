@@ -83,11 +83,28 @@ public class LoginActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 //Login Successful
                                 if (fAuth.getCurrentUser().isEmailVerified()) {
-                                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(fAuth.getUid());
+                                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(fAuth.getCurrentUser().getUid());
                                     Map<String, Object> mp = new HashMap<>();
                                     mp.put("isEmailVerified",new Boolean(true));
                                     mp.put("isPhoneVerified", new Boolean(true));
-                                    databaseReference.updateChildren(mp);
+                                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            User user = snapshot.getValue(User.class);
+                                            databaseReference.updateChildren(mp).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    user.uIdByEmail();
+                                                }
+                                            });
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+
 
                                     FirebaseUser fuser = FirebaseAuth.getInstance().getCurrentUser();
                                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
@@ -111,13 +128,13 @@ public class LoginActivity extends AppCompatActivity {
                                         }
                                     });
                                 } else {
-                                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(fAuth.getUid());
+                                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(fAuth.getCurrentUser().getUid());
                                     databaseReference.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                         @Override
                                         public void onComplete(@NonNull Task<DataSnapshot> task) {
                                             if(task.isSuccessful()){
                                                 User user = task.getResult().getValue(User.class);
-                                                if (user.isEmailVerified() || user.isPhoneVerified()) {
+                                                if (user.isEmailVerified || user.isPhoneVerified) {
                                                     FirebaseUser fuser = FirebaseAuth.getInstance().getCurrentUser();
                                                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
                                                     ref.child("Users").child(fuser.getUid()).child("password").setValue(password);
@@ -139,6 +156,8 @@ public class LoginActivity extends AppCompatActivity {
                                                             }
                                                         }
                                                     });
+                                                }else{
+                                                    Toast.makeText(LoginActivity.this, "Please Verify Your Email", Toast.LENGTH_SHORT).show();
                                                 }
                                             } else {
                                                 Toast.makeText(LoginActivity.this, "Please Verify Your Email", Toast.LENGTH_SHORT).show();
@@ -151,7 +170,6 @@ public class LoginActivity extends AppCompatActivity {
                                         throw task.getException();
                                     } catch (Exception e) {
                                         Toast.makeText(getApplicationContext(), "Wrong Credential. Please try again.", Toast.LENGTH_SHORT).show();
-
                                     }
                                 }
 

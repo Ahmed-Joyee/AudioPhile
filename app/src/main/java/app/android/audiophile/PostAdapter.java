@@ -69,7 +69,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewholder>{
         Log.d("PostAdapter", model.getPostID());
         Log.d("PostAdapter", model.getPostDescription());
         FirebaseDatabase.getInstance().getReference().child("Users").child("posts").child(model.getPostID()).child("likes")
-                .child(FirebaseAuth.getInstance().getUid()).addValueEventListener(new ValueEventListener() {
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
@@ -77,7 +77,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewholder>{
                             holder.binding.like.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    FirebaseDatabase.getInstance().getReference().child("Users").child("posts").child(model.getPostID()).child("likes").child(FirebaseAuth.getInstance().getUid())
+                                    FirebaseDatabase.getInstance().getReference().child("Users").child("posts").child(model.getPostID()).child("likes").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                             .removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void unused) {
@@ -97,7 +97,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewholder>{
                             holder.binding.like.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    FirebaseDatabase.getInstance().getReference().child("Users").child("posts").child(model.getPostID()).child("likes").child(FirebaseAuth.getInstance().getUid())
+                                    FirebaseDatabase.getInstance().getReference().child("Users").child("posts").child(model.getPostID()).child("likes").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                             .setValue(true).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void unused) {

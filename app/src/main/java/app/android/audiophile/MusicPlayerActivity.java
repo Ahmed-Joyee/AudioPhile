@@ -114,7 +114,9 @@ public class MusicPlayerActivity extends AppCompatActivity {
     private void playMusic(){
 
         if(setSeek!= 0) {
-
+            mediaPlayer = MyMediaPlayer.getInstance();
+            seekBar.setProgress(setSeek);
+            seekBar.setMax(mediaPlayer.getDuration());
         }else {
             mediaPlayer = MyMediaPlayer.getInstance();
             mediaPlayer.reset();
@@ -123,7 +125,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
                 mediaPlayer.prepare();
                 mediaPlayer.start();
 //                mediaPlayer.seekTo(setSeek);
-//                seekBar.setProgress(setSeek);
+                seekBar.setProgress(setSeek);
                 seekBar.setMax(mediaPlayer.getDuration());
             } catch (IOException e) {
                 e.printStackTrace();

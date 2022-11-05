@@ -290,7 +290,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                             if(MyMediaPlayer.getInstance().isPlaying())MyMediaPlayer.getInstance().stop();
                             navigationView.setCheckedItem(R.id.nav_user_profile);
                             Intent intent = new Intent(HomeActivity.this, UserProfileActivity.class);
-                            intent.putExtras(bundle);
+//                            intent.putExtras(bundle);
                             startActivity(intent);
 //                            finish();
                             break;

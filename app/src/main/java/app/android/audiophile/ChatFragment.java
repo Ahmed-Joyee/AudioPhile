@@ -167,6 +167,7 @@ public class ChatFragment extends Fragment {
         databaseReference.child("Users").child(myUId).child("friends").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                names.clear();
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()){
                     UsernameAndUId usernameAndUId = dataSnapshot.getValue(UsernameAndUId.class);
                     FirebaseDatabase.getInstance().getReference().child("Users").child(usernameAndUId.getuId()).child("username").addValueEventListener(new ValueEventListener() {

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class NoInternetActivity extends AppCompatActivity {
 
@@ -40,6 +41,9 @@ public class NoInternetActivity extends AppCompatActivity {
                 if(isNetworkAvailable()){
                     Intent intent = new Intent(NoInternetActivity.this, LoginActivity.class);
                     startActivity(intent);
+                }
+                else{
+                    Toast.makeText(NoInternetActivity.this, "No Internet Connection Available", Toast.LENGTH_SHORT).show();
                 }
             }
         });

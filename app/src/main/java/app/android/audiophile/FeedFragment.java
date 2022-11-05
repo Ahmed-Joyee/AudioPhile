@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -98,37 +101,40 @@ public class FeedFragment extends Fragment {
         rv.addItemDecoration(new DividerItemDecoration(rv.getContext(),DividerItemDecoration.VERTICAL));
         rv.setNestedScrollingEnabled(true);
         rv.setAdapter(pp);
-        dashboardList.clear();  
+        dashboardList.clear();
+        Map<String, Boolean> map=new HashMap<String,Boolean>();
         DatabaseReference databaseReference  = FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("friends");
         databaseReference.addValueEventListener(new ValueEventListener() {
-
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                 for(DataSnapshot data : snapshot.getChildren()){
                     UsernameAndUId usernameAndUId = data.getValue(UsernameAndUId.class);
-                    FirebaseDatabase.getInstance().getReference().child("Users").child("posts").orderByChild("postedAt").addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot1) {
-
-                            for(DataSnapshot dataSnapshot: snapshot1.getChildren())
-                            {
-                                Post post=dataSnapshot.getValue(Post.class);
-                                post.setPostID(dataSnapshot.getKey());
-                                dashboardList.add(post);
-                            }
-                            Collections.reverse(dashboardList);
-//                            pp.notifyDataSetChanged();
-                            pp.filter(dashboardList);
-                        }
-
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
+                    map.put(usernameAndUId.getuId(), true);
                 }
             }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        FirebaseDatabase.getInstance().getReference().child("Users").child("posts").orderByChild("postedAt").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot1) {
+                dashboardList.clear();
+                for(DataSnapshot dataSnapshot: snapshot1.getChildren())
+                {
+                    Post post=dataSnapshot.getValue(Post.class);
+                    if(map.containsKey(post.getPostedBy())==true){
+                        dashboardList.add(post);
+                    }
+                }
+                Collections.reverse(dashboardList);
+                            pp.notifyDataSetChanged();
+//                pp.filter(dashboardList);
+            }
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {

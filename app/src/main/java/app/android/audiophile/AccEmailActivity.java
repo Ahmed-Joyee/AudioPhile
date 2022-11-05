@@ -180,6 +180,9 @@ public class AccEmailActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
                                 Toast.makeText(AccEmailActivity.this, "Reset email instructions sent to " + eml, Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(AccEmailActivity.this, LoginActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
                             } else {
                                 Toast.makeText(AccEmailActivity.this, eml + " does not exist", Toast.LENGTH_LONG).show();
                             }
